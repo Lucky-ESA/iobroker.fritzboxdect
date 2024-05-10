@@ -1,0 +1,129 @@
+{
+    "common": {
+        "name": "fritzboxdect",
+        "version": "0.0.1",
+        "news": {
+            "0.0.1": {
+                "en": "initial release",
+                "de": "Erstveröffentlichung",
+                "ru": "Начальная версия",
+                "pt": "lançamento inicial",
+                "nl": "Eerste uitgave",
+                "fr": "Première version",
+                "it": "Versione iniziale",
+                "es": "Versión inicial",
+                "pl": "Pierwsze wydanie",
+                "uk": "Початкова версія",
+                "zh-cn": "首次出版"
+            }
+        },
+        "title": "fritzboxdect",
+        "titleLang": {
+            "en": "fritzboxdect",
+            "de": "fritzboxdect",
+            "ru": "Фрицбоксдект",
+            "pt": "fritzboxdect",
+            "nl": "fritzboxdect",
+            "fr": "fritzboxdect",
+            "it": "fritzboxdect",
+            "es": "fritzboxdect",
+            "pl": "fritzboxdect",
+            "uk": "fritzboxdect",
+            "zh-cn": "弗里茨博克斯德克特"
+        },
+        "desc": {
+            "en": "Control Fritz DECT",
+            "de": "Fritz DECT steuern",
+            "ru": "Управление Фрицем DECT",
+            "pt": "Controle Fritz DECT",
+            "nl": "Controle Fritz DECT",
+            "fr": "Contrôle Fritz DECT",
+            "it": "Controlla Fritz DECT",
+            "es": "Controlar Fritz DECT",
+            "pl": "Kontroluj Fritza DECT",
+            "uk": "Контроль Fritz DECT",
+            "zh-cn": "控制弗里茨 DECT"
+        },
+        "authors": ["Lucky-ESA <github@luckyskills.de>"],
+        "keywords": ["fritz", "fritzbox", "iobroker", "dect"],
+        "license": "MIT",
+        "platform": "Javascript/Node.js",
+        "main": "main.js",
+        "icon": "fritzboxdect.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/Lucky-ESA/ioBroker.fritzboxdect/master/admin/fritzboxdect.png",
+        "readme": "https://github.com/Lucky-ESA/ioBroker.fritzboxdect/blob/master/README.md",
+        "loglevel": "info",
+        "mode": "daemon",
+        "type": "multimedia",
+        "compact": true,
+        "messagebox": true,
+        "connectionType": "local",
+        "dataSource": "poll",
+        "adminUI": {
+            "config": "json"
+        },
+        "dependencies": [
+            {
+                "js-controller": ">=5.0.19"
+            }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=6.13.16"
+            }
+        ]
+    },
+    "native": {
+        "fritz": [],
+        "icons": []
+    },
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": {
+                    "en": "Information",
+                    "de": "Informationen",
+                    "ru": "Информация",
+                    "pt": "Informação",
+                    "nl": "Informatie",
+                    "fr": "Information",
+                    "it": "Informazioni",
+                    "es": "Información",
+                    "pl": "Informacja",
+                    "uk": "Інформація",
+                    "zh-cn": "信息"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": {
+                    "en": "Device or service connected",
+                    "de": "Geräte- oder Serviceanschluss",
+                    "ru": "Устройство или сервис подключены",
+                    "pt": "Dispositivo ou serviço conectado",
+                    "nl": "Device of dienst verbonden",
+                    "fr": "Appareil ou service connecté",
+                    "it": "Dispositivo o servizio collegato",
+                    "es": "Dispositivo o servicio conectado",
+                    "pl": "Urządzenie lub usługa połączona",
+                    "uk": "Пристрої або послуги підключені",
+                    "zh-cn": "证人或有关服务"
+                },
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        }
+    ]
+}

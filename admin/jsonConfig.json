@@ -1,0 +1,207 @@
+{
+    "i18n": true,
+    "type": "tabs",
+    "items": {
+        "tab1": {
+            "type": "panel",
+            "label": "Tab Fritz",
+            "items": {
+                "_headerAdapter": {
+                    "type": "header",
+                    "text": "Adapter settings for fritzboxdect",
+                    "size": 2
+                },
+                "fritz": {
+                    "newLine": true,
+                    "sm": 12,
+                    "noDelete": false,
+                    "type": "table",
+                    "items": [
+                        {
+                            "type": "checkbox",
+                            "attr": "activ",
+                            "width": 60,
+                            "title": "activ",
+                            "tooltip": "ACTIV",
+                            "filter": true,
+                            "sort": true,
+                            "default": false,
+                            "style": {
+                                "textAlign": "center",
+                                "width": 60
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "attr": "ip",
+                            "width": 200,
+                            "title": "fritz_ip",
+                            "tooltip": "FRITZ_IP",
+                            "filter": false,
+                            "sort": false,
+                            "default": "",
+                            "style": {
+                                "width": 200
+                            }
+                        },
+                        {
+                            "type": "text",
+                            "attr": "user",
+                            "width": 200,
+                            "title": "username",
+                            "tooltip": "USERNAME",
+                            "filter": false,
+                            "sort": false,
+                            "hidden": "_alive",
+                            "default": "",
+                            "style": {
+                                "width": 200
+                            }
+                        },
+                        {
+                            "type": "password",
+                            "attr": "password",
+                            "width": 200,
+                            "title": "password",
+                            "tooltip": "PASSWORD",
+                            "filter": false,
+                            "sort": false,
+                            "hidden": "_alive",
+                            "default": "",
+                            "style": {
+                                "width": 200
+                            }
+                        },
+                        {
+                            "type": "select",
+                            "attr": "protocol",
+                            "width": 100,
+                            "title": "proto",
+                            "tooltip": "PROTO",
+                            "filter": false,
+                            "sort": false,
+                            "options": [
+                                { "label": "http", "value": "http" },
+                                { "label": "https", "value": "https" }
+                            ],
+                            "default": "http",
+                            "style": {
+                                "width": 100
+                            }
+                        },
+                        {
+                            "type": "selectSendTo",
+                            "title": "icon64",
+                            "tooltip": "ICON64",
+                            "attr": "picture",
+                            "disabled": "!data.activ",
+                            "jsonData": "{\"icon\":{\"icons\":${JSON.stringify(globalData.icons)}}}",
+                            "command": "getIconList",
+                            "width": 200,
+                            "alsoDependsOn": ["icons"],
+                            "style": {
+                                "textAlign": "center",
+                                "width": 200
+                            }
+                        },
+                        {
+                            "type": "number",
+                            "attr": "booster",
+                            "width": 60,
+                            "title": "booster",
+                            "tooltip": "BOOSTER",
+                            "filter": false,
+                            "sort": false,
+                            "default": 5,
+                            "style": {
+                                "width": 60
+                            }
+                        },
+                        {
+                            "type": "number",
+                            "attr": "open",
+                            "width": 60,
+                            "title": "open",
+                            "tooltip": "OPEN",
+                            "filter": false,
+                            "sort": false,
+                            "default": 5,
+                            "style": {
+                                "width": 60
+                            }
+                        },
+                        {
+                            "type": "number",
+                            "attr": "dect_interval",
+                            "width": 60,
+                            "title": "dect_int",
+                            "tooltip": "DECT_INT",
+                            "filter": false,
+                            "sort": false,
+                            "default": 1,
+                            "style": {
+                                "width": 60
+                            }
+                        },
+                        {
+                            "type": "number",
+                            "attr": "temp_interval",
+                            "width": 60,
+                            "title": "temp_int",
+                            "tooltip": "TEMP_INT",
+                            "filter": false,
+                            "sort": false,
+                            "default": 600,
+                            "style": {
+                                "width": 60
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "tab2": {
+            "type": "panel",
+            "label": "Tab icons",
+            "items": {
+                "_headerICONS": {
+                    "type": "header",
+                    "text": "Info icons",
+                    "size": 2
+                },
+                "icons": {
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "noDelete": false,
+                    "type": "table",
+                    "style": {
+                        "textAlign": "center"
+                    },
+                    "items": [
+                        {
+                            "type": "text",
+                            "attr": "iconname",
+                            "width": "50%",
+                            "title": "iconname",
+                            "tooltip": "ICONNAME",
+                            "filter": true,
+                            "sort": true,
+                            "default": ""
+                        },
+                        {
+                            "type": "image",
+                            "attr": "picture",
+                            "width": "50%",
+                            "title": "upload",
+                            "tooltip": "UPLOAD",
+                            "accept": "image/*",
+                            "base64": true,
+                            "crop": true
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
