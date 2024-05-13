@@ -34,6 +34,7 @@ class Fritzboxdect extends utils.Adapter {
         this.double_call = {};
         this.deviceCheck = null;
         this.lang = "de";
+        this.viewdebug = false;
     }
 
     /**

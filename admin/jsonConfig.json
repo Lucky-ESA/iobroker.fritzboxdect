@@ -8,7 +8,7 @@
             "items": {
                 "_headerAdapter": {
                     "type": "header",
-                    "text": "Adapter settings for fritzboxdect",
+                    "text": "fritzboxdect adapter settings",
                     "size": 2
                 },
                 "fritz": {

@@ -13,7 +13,14 @@
 
 ## fritzboxdect adapter for ioBroker
 
-Control Fritz DECT
+Control Fritz DECT Devices
+
+## Known devices
+
+## Description
+
+🇬🇧 [Description](/docs/en/README.md)</br>
+🇩🇪 [Beschreibung](/docs/de/README.md)
 
 <!--
     Placeholder for the next version (at the beginning of the line):
