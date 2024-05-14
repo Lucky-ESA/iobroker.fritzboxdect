@@ -9,8 +9,19 @@
 -   [Instanz Einstellungen](#instanz-einstellungen)
     -   [Einstellungen TAB Fritzbox](#instanz-konfiguration-tab-fritzbox-erstellen)
     -   [Einstellungen TAB Symbole](#instanz-konfiguration-tab-symbole-erstellen)
--   [DECT Geräte](#dect-geräte)
+-   [Geräte](#dect-geräte)
     -   [DECT 100](#dect-100)
+    -   [DECT 200 - 210](#dect-200---210)
+    -   [DECT 350](#dect-350)
+    -   [DECT 400](#dect-400)
+    -   [DECT 440](#dect-440)
+    -   [DECT 500](#dect-500)
+    -   [DECT 546E](#dect-546e)
+    -   [DECT Comet](#dect-comet)
+    -   [HAN-FUN](#han-fun)
+    -   [Gruppen](#groups)
+    -   [Vorlagen](#templates)
+    -   [Trigger](#triggers)
 
 # Instanz Einstellungen
 
@@ -18,7 +29,30 @@
 
 [Zusammenfassung](#zusammenfassung)
 
+-   `Aktiv` Fritzbox aktivieren/deaktivieren
+-   `Fritzbox-IP` IP der Fritzbox
+-   `Nutzername` Login Benutzername
+-   `Passwort` Passwort
+-   `Protokoll` HTTP oder HTTPS
+-   `Symbol auswählen` Das Icon wird unter Objekte angezeigt. Muss erst unter `Symbole erstellen` angelegt werden
+
+![instance_1.png](img/instance_1.png)
+
+-   `Booster` Heizungs Boost in Minuten
+-   `Fenster öffnen` Fenster offen Modus in Minuten
+-   `DECT Intervall` Intervall für die Aktualisierung der DECT und Gruppen. Je mehr Geräte vorhanden sind um so länger benötigit die Aktualisierung und dann macht 1 Sekunde kein Sinn. Benötigt der Adapter länger als der Intervall, wird die Aktaulisierung geskippt.
+-   `Vorlagenintervall` Intervall für die Aktualisierung der Templates und Trigger. Kann mit 0 deaktiviert werden.
+
+![instance_2.png](img/instance_2.png)
+
 ### Instanz Konfiguration TAB Symbole erstellen
+
+-   `Symbolname` Name für das Bild. Kann dann unter `Fritzbox hinzufügen` ausgewählt werden
+-   `Upload` Icon hochladen
+
+![instance_3.png](img/instance_3.png)
+
+![instance_4.png](img/instance_4.png)
 
 [Zusammenfassung](#zusammenfassung)
 
@@ -26,7 +60,49 @@
 
 ### DECT 100
 
+[Zusammenfassung](#zusammenfassung)
+
+### DECT 200 - 210
+
+[Zusammenfassung](#zusammenfassung)
+
+### DECT 350
+
+[Zusammenfassung](#zusammenfassung)
+
+### DECT 400
+
+[Zusammenfassung](#zusammenfassung)
+
+### DECT 440
+
+[Zusammenfassung](#zusammenfassung)
+
 ### DECT 500
+
+[Zusammenfassung](#zusammenfassung)
+
+### DECT 546E
+
+[Zusammenfassung](#zusammenfassung)
+
+### DECT Comet
+
+[Zusammenfassung](#zusammenfassung)
+
+### HAN-FUN
+
+[Zusammenfassung](#zusammenfassung)
+
+# Groups
+
+[Zusammenfassung](#zusammenfassung)
+
+# Templates
+
+[Zusammenfassung](#zusammenfassung)
+
+# Triggers
 
 ```JSON
 {

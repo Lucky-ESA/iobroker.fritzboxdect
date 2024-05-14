@@ -82,8 +82,8 @@ class Fritzboxdect extends utils.Adapter {
             if (dev.dect_interval == null || dev.dect_interval < 1) {
                 dev.dect_interval = 1;
             }
-            if (dev.temp_interval == null || dev.temp_interval < 1) {
-                dev.temp_interval = 60;
+            if (dev.temp_interval == null) {
+                dev.temp_interval = 0;
             }
             if (dev.activ != null && !dev.activ) {
                 this.log.info(`Fritbox ${dev.ip} is disabled!`);
