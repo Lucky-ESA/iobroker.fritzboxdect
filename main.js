@@ -29,6 +29,7 @@ class Fritzboxdect extends utils.Adapter {
         this.createDevice = helper.createDevice;
         this.createChannels = helper.createChannels;
         this.createColorTemplate = helper.createColorTemplate;
+        this.sleepTimer = null;
         this.dect_device = {};
         this.clients = {};
         this.double_call = {};
@@ -221,6 +222,8 @@ class Fritzboxdect extends utils.Adapter {
         await this.createChannels(this.clients[dp], devices, constants, dp_name);
         const channels = await this.getChannelsAsync();
         const channels_array = channels.map((entry) => entry._id);
+        this.log.debug(`All channels ${JSON.stringify(channels_array)}`);
+        this.log.debug(`DP ${dp}`);
         this.clients[dp].updateChannel(channels_array);
     }
 
@@ -297,6 +300,7 @@ class Fritzboxdect extends utils.Adapter {
     onUnload(callback) {
         try {
             this.deviceCheck && this.clearInterval(this.deviceCheck);
+            this.sleepTimer && this.clearTimeout(this.sleepTimer);
             this.deviceCheck = null;
             for (const id in this.clients) {
                 this.clients[id].apiFritz.destroy();
@@ -739,6 +743,39 @@ class Fritzboxdect extends utils.Adapter {
         await this.setStateAsync(`${device}.colorcontrol.hex`, hex, true);
     }
 
+    color_temperature(val) {
+        const pct = val;
+        let temperature = 3400;
+        if (pct >= 0 && pct <= 11) {
+            temperature = 2700;
+        }
+        if (pct >= 11 && pct <= 22) {
+            temperature = 3000;
+        }
+        if (pct >= 22 && pct <= 33) {
+            temperature = 3400;
+        }
+        if (pct >= 33 && pct <= 44) {
+            temperature = 3800;
+        }
+        if (pct >= 44 && pct <= 55) {
+            temperature = 4200;
+        }
+        if (pct >= 55 && pct <= 66) {
+            temperature = 4700;
+        }
+        if (pct >= 66 && pct <= 77) {
+            temperature = 5300;
+        }
+        if (pct >= 77 && pct <= 88) {
+            temperature = 5900;
+        }
+        if (pct >= 88 && pct <= 100) {
+            temperature = 6500;
+        }
+        return temperature;
+    }
+
     color_500(sat, hue) {
         if (sat >= 25) {
             let val = 255;
@@ -952,6 +989,17 @@ class Fritzboxdect extends utils.Adapter {
         );
     }
 
+    /**
+     * @param {number} ms
+     */
+    sleep(ms) {
+        return new Promise((resolve) => {
+            this.sleepTimer = this.setTimeout(() => {
+                resolve(true);
+            }, ms);
+        });
+    }
+
     bound(n, max) {
         if (typeof n == "string" && n.indexOf(".") != -1 && parseFloat(n) === 1) {
             n = "100%";
@@ -1035,6 +1083,9 @@ class Fritzboxdect extends utils.Adapter {
     }
 
     getinterfaces(valtf) {
+        if (valtf == null) {
+            return "Unknwon";
+        }
         if (!valtf.toString().includes(",")) {
             return constants.interfaces[valtf];
         }
@@ -1049,7 +1100,7 @@ class Fritzboxdect extends utils.Adapter {
 
     getIcon(mask, name) {
         const masks = (mask >>> 0).toString(2).split("").reverse().join("");
-        const pic = typeof name != "undefined" ? name.split(" ")[1] : "";
+        const pic = typeof name != "undefined" ? name.split(" ").pop() : "";
         if (masks.toString()[12] === "1") return constants.pics["Group"];
         else if (constants.pics[pic]) return constants.pics[pic];
         else if (masks.toString()[18] === "1") return constants.pics["Blind"];
