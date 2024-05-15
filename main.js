@@ -179,17 +179,19 @@ class Fritzboxdect extends utils.Adapter {
         }
         this.deviceCheck = this.setInterval(
             async () => {
+                await this.checkDeviceFolder();
                 this.checkDevices();
             },
             60 * 1000 * 60 * 24,
         );
+        this.checkDevices();
     }
 
     async checkDevices() {
         this.log.info(`Start device check.`);
-        //accountTerms.indexOf(term.termsID) === -1;
         const channels = await this.getChannelsAsync();
         const channels_array = channels.map((entry) => entry._id);
+        const channels_fritz = [];
         for (const id in this.clients) {
             let device_array = [];
             const devices = await this.clients[id].apiFritz.fritzRequest(
@@ -198,20 +200,86 @@ class Fritzboxdect extends utils.Adapter {
                 "device",
             );
             if (devices && devices.devicelist && devices.devicelist.device) {
-                if (Object.keys(devices).length == 0) {
+                if (Object.keys(devices.devicelist.device).length == 0) {
                     return;
-                } else if (Object.keys(devices).length == 1) {
-                    device_array.push(devices);
+                } else if (Object.keys(devices.devicelist.device).length == 1) {
+                    device_array.push(devices.devicelist.device);
                 } else {
-                    device_array = devices;
+                    device_array = devices.devicelist.device;
                 }
                 for (const device of device_array) {
                     if (device.functionbitmask != 1) {
                         const ident = `DECT_${device.identifier.replace(/\s/g, "").replace(/-1/g, "")}`;
                         const path = `${this.namespace}.${this.clients[id].dp}.${ident}`;
-                        if (!channels_array.includes(path)) {
-                            //
-                        }
+                        channels_fritz.push(path);
+                    }
+                }
+            }
+            if (devices && devices.devicelist && devices.devicelist.group) {
+                if (Object.keys(devices.devicelist.group).length == 0) {
+                    return;
+                } else if (Object.keys(devices.devicelist.group).length == 1) {
+                    device_array.push(devices.devicelist.group);
+                } else {
+                    device_array = devices.devicelist.group;
+                }
+                for (const device of device_array) {
+                    if (device.functionbitmask != 1) {
+                        const ident = `GROUP_${device.identifier.replace(/\s/g, "").replace(/-1/g, "")}`;
+                        const path = `${this.namespace}.${this.clients[id].dp}.${ident}`;
+                        channels_fritz.push(path);
+                    }
+                }
+            }
+            const template = await this.clients[id].apiFritz.fritzRequest(
+                "GET",
+                "/webservices/homeautoswitch.lua?switchcmd=gettemplatelistinfos&sid=",
+                "template",
+            );
+            if (template && template.templatelist && template.templatelist.template) {
+                if (Object.keys(template.templatelist.template).length == 0) {
+                    return;
+                } else if (Object.keys(template.templatelist.template).length == 1) {
+                    device_array.push(template.templatelist.template);
+                } else {
+                    device_array = template.templatelist.template;
+                }
+                for (const device of device_array) {
+                    if (device.functionbitmask != 1) {
+                        const ident = `TEMPLATE_${device.identifier.replace(/\s/g, "").replace(/-1/g, "")}`;
+                        const path = `${this.namespace}.${this.clients[id].dp}.${ident}`;
+                        channels_fritz.push(path);
+                    }
+                }
+            }
+            const trigger = await this.clients[id].apiFritz.fritzRequest(
+                "GET",
+                "/webservices/homeautoswitch.lua?switchcmd=gettriggerlistinfos&sid=",
+                "trigger",
+            );
+            if (trigger && trigger.triggerlist && trigger.triggerlist.trigger) {
+                if (Object.keys(trigger.triggerlist.trigger).length == 0) {
+                    return;
+                } else if (Object.keys(trigger.triggerlist.trigger).length == 1) {
+                    device_array.push(trigger.triggerlist.trigger);
+                } else {
+                    device_array = trigger.triggerlist.trigger;
+                }
+                for (const device of device_array) {
+                    if (device.functionbitmask != 1) {
+                        const ident = `TRIGGER_${device.identifier.replace(/\s/g, "").replace(/-1/g, "")}`;
+                        const path = `${this.namespace}.${this.clients[id].dp}.${ident}`;
+                        channels_fritz.push(path);
+                    }
+                }
+            }
+            for (const device of channels_array) {
+                if (channels_fritz.includes(device)) {
+                    this.log.debug(`Found channel ${device}`);
+                } else {
+                    if (device != `${this.namespace}.info`) {
+                        this.log.debug(`Cannot found channel - Delete ${device}`);
+                        //await this.delObjectAsync(device, { recursive: true });
                     }
                 }
             }
@@ -263,13 +331,14 @@ class Fritzboxdect extends utils.Adapter {
      */
     async checkDeviceFolder() {
         try {
+            this.log.info(`Start check devices object!`);
             const devices = await this.getDevicesAsync();
             for (const element of devices) {
                 const id = element["_id"].split(".").pop();
                 if (this.clients[id]) {
                     this.log.debug(`Found device ${element["_id"]}`);
                 } else {
-                    this.log.debug(`Delete device ${element["_id"]}`);
+                    this.log.info(`Delete device ${element["_id"]}`);
                     await this.delObjectAsync(`${id}`, { recursive: true });
                 }
             }
@@ -392,7 +461,10 @@ class Fritzboxdect extends utils.Adapter {
                 }
                 return;
             }
-            if (!this.clients[fritz][device] || !this.clients[fritz][device].status) {
+            if (
+                (!this.clients[fritz][device] || !this.clients[fritz][device].status) &&
+                (lastsplit.startsWith("DECT_") || lastsplit.startsWith("GROUP_"))
+            ) {
                 this.log.info(`Device ${device} is Offline`);
                 return;
             }
@@ -424,7 +496,41 @@ class Fritzboxdect extends utils.Adapter {
             let sendstr = "";
             let tsoll = 0;
             this.log.info(lastsplit);
+            let type_val;
+            let icon_val;
+            let len_meta = 0;
+            const meta = {};
+            if (lastsplit === "setMetadata") {
+                icon_val = await this.getStateAsync(`${fritz}.${device}.metadata.icon`);
+                type_val = await this.getStateAsync(`${fritz}.${device}.metadata.type`);
+                if (
+                    type_val &&
+                    type_val.val != null &&
+                    (type_val.val == "coming" || type_val.val == "leaving" || type_val.val == "generic")
+                ) {
+                    meta["type"] = type_val.val;
+                }
+                if (
+                    icon_val &&
+                    icon_val.val != null &&
+                    typeof icon_val.val === "number" &&
+                    (icon_val.val == 0 || icon_val.val > 0)
+                ) {
+                    meta["icon"] = icon_val.val;
+                }
+                len_meta = Object.keys(meta).length;
+            }
             switch (lastsplit) {
+                case "type":
+                case "icon":
+                    this.setAckFlag(id_ack);
+                    break;
+                case "setMetadata":
+                    if (len_meta > 0) {
+                        sendstr = `ain=${deviceId}&switchcmd=setmetadata&metadata=${JSON.stringify(meta)}&sid=`;
+                        this.setAckFlag(id_ack, { val: false });
+                    }
+                    break;
                 case "getTemperatureStatistic":
                 case "getStatistic":
                     this.clients[fritz].apiFritz.getStatistic(
@@ -593,7 +699,7 @@ class Fritzboxdect extends utils.Adapter {
                         this.log.info(`Can not create a timestamp with value: ${state.val}`);
                     }
                     break;
-                case "apply_template":
+                case "apply":
                     sendstr = `ain=${deviceId}&switchcmd=applytemplate&sid=`;
                     this.setAckFlag(id_ack, { val: false });
                     break;
@@ -1067,7 +1173,7 @@ class Fritzboxdect extends utils.Adapter {
     }
 
     getmask(mask) {
-        if (mask == 0 || mask == "0") return "0";
+        if (mask == 0 || mask == "0") return constants.bitmasks[0];
         const masks = (mask >>> 0).toString(2).split("").reverse().join("");
         let bitstring = null;
         for (let i = 0; i < masks.toString().length; i++) {
