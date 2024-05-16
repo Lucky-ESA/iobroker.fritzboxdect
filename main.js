@@ -552,8 +552,8 @@ class Fritzboxdect extends utils.Adapter {
                     break;
                 case "hex":
                     dummy = this.hex_to_rgb(state.val);
-                    this.setStateHex(dummy, device);
-                    sendstr = `ain=${deviceId}&switchcmd=setcolor&hue=${dummy[0]}&saturation=${dummy[1]}&duration=100`;
+                    this.setStateHex(dummy, id_ack);
+                    sendstr = `ain=${deviceId}&switchcmd=setcolor&hue=${dummy[0]}&saturation=${dummy[1]}&duration=100&sid=`;
                     break;
                 case "tsoll":
                     tsoll = parseInt(state.val.toString());
@@ -845,8 +845,10 @@ class Fritzboxdect extends utils.Adapter {
     }
 
     async setStateHex(dummy, device) {
-        const hex = this.hsvToHex(dummy[0], dummy[1], dummy[2]);
-        await this.setStateAsync(`${device}.colorcontrol.hex`, hex, true);
+        const s = Math.round((dummy[1] / 255) * 100);
+        const v = Math.round((dummy[2] / 255) * 100);
+        const hex = this.hsvToHex(dummy[0], s, v);
+        await this.setStateAsync(device, hex, true);
     }
 
     color_temperature(val) {
