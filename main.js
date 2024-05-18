@@ -42,7 +42,6 @@ class Fritzboxdect extends utils.Adapter {
      * Is called when databases are connected and adapter received configuration.
      */
     async onReady() {
-        // TODO sub_template, trigger, getTemp
         this.setState("info.connection", false, true);
         const isChange = await this.configcheck();
         if (isChange) {
