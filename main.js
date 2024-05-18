@@ -42,6 +42,7 @@ class Fritzboxdect extends utils.Adapter {
      * Is called when databases are connected and adapter received configuration.
      */
     async onReady() {
+        // TODO sub_template, trigger, getTemp
         this.setState("info.connection", false, true);
         const isChange = await this.configcheck();
         if (isChange) {
@@ -585,10 +586,11 @@ class Fritzboxdect extends utils.Adapter {
                     }
                     break;
                 case "saturation":
-                    dummy = await this.getStateAsync(`${fritz}.${device}.colorcontrol.hue`);
-                    if (dummy && dummy.val != null) {
-                        sendstr = `ain=${deviceId}&switchcmd=setcolor&hue=${dummy.val}&saturation=${state.val}&duration=100&sid=`;
-                    }
+                    //dummy = await this.getStateAsync(`${fritz}.${device}.colorcontrol.hue`);
+                    //if (dummy && dummy.val != null) {
+                    //    sendstr = `ain=${deviceId}&switchcmd=setcolor&hue=${dummy.val}&saturation=${state.val}&duration=100&sid=`;
+                    //}
+                    this.setAckFlag(id_ack);
                     break;
                 case "unmapped_hue":
                     dummy = await this.getStateAsync(`${fritz}.${device}.colorcontrol.unmapped_saturation`);
@@ -597,10 +599,11 @@ class Fritzboxdect extends utils.Adapter {
                     }
                     break;
                 case "unmapped_saturation":
-                    dummy = await this.getStateAsync(`${fritz}.${device}.colorcontrol.unmapped_hue`);
-                    if (dummy && dummy.val != null) {
-                        sendstr = `ain=${deviceId}&switchcmd=setunmappedcolor&hue=${dummy.val}&saturation=${state.val}&duration=100&sid=`;
-                    }
+                    //dummy = await this.getStateAsync(`${fritz}.${device}.colorcontrol.unmapped_hue`);
+                    //if (dummy && dummy.val != null) {
+                    //    sendstr = `ain=${deviceId}&switchcmd=setunmappedcolor&hue=${dummy.val}&saturation=${state.val}&duration=100&sid=`;
+                    //}
+                    this.setAckFlag(id_ack);
                     break;
                 case "level":
                     state.val = parseInt(state.val.toString());
