@@ -336,7 +336,8 @@
     -   `colorcontrol.unmapped_saturation`: Siehe `colorcontrol.unmapped_hue`
     -   `levelcontrol.level`: Level/Niveau von 0(0%) bis 255(100%)
     -   `levelcontrol.levelpercentage`: Level/Niveau in Prozent, 0 bis 100 Prozent
-    -   `simpleonoff.state`: Aktor an(true)/aus(false)
+    -   `simpleonoff.state`: 0=off 1=on 2=toggle
+    -   `simpleonoff.simpleonoff`: Aktor an(true)/aus(false)
     -   `name`: Name vom Aktor ändern`:
 
 -   Möglich Hue und Saturation Werte

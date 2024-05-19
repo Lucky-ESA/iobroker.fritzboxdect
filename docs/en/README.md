@@ -336,7 +336,8 @@
     -   `colorcontrol.unmapped_saturation`: See `colorcontrol.unmapped_hue`
     -   `levelcontrol.level`: Level from 0(0%) to 255(100%)
     -   `levelcontrol.levelpercentage`: Level in percent, 0 to 100 percent
-    -   `simpleonoff.state`: Actuator on(true)/off(false)
+    -   `simpleonoff.state`: 0=off 1=on 2=toggle
+    -   `simpleonoff.simpleonoff`: Actor on(true)/off(false)
     -   `name`: Change the name of the actuator`:
 
 -   Possible Hue and Saturation values
