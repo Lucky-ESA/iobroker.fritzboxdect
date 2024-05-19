@@ -439,6 +439,9 @@ class Fritzboxdect extends utils.Adapter {
                     return;
                 }
                 switch (lastsplit) {
+                    case "own_request":
+                        this.own_request(id, fritz, state.val);
+                        break;
                     case "createColorTemplates":
                         this.createColorTemplates(id_ack, fritz);
                         break;
@@ -722,6 +725,15 @@ class Fritzboxdect extends utils.Adapter {
         } catch (e) {
             this.log.error(`Sendcommand: ${e}`);
         }
+    }
+
+    async own_request(id, fritz, url) {
+        url = url + "&sid=";
+        const data = await this.clients[fritz].apiFritz.own_request("GET", url, null, true);
+        if (data) {
+            await this.setStateAsync(`${fritz}.DECT_Control.own_request_response`, JSON.stringify(data), true);
+        }
+        this.setAckFlag(id);
     }
 
     async createColorTemplates(id_ack, fritz) {

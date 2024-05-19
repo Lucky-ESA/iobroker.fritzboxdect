@@ -86,7 +86,7 @@
     -   `addColorTemplate.levelPercentage_template`: Level/Niveau in Prozent, 0 bis 100 Prozent
     -   `addColorTemplate.name_template`: Name vom Template
     -   `getsubscriptionstate`: Status DECT-ULE-Geräteanmeldung States `subscriptionslatest` und `subscriptionstate` werden gesetzt
-    -   `own_request`: Eigener Request z. Bsp.: `switchcmd=getbasicdevicestats&ain=<identifier>&sid=` Leerzeichen mit %20 ersetzen
+    -   `own_request`: Eigener Request z. Bsp.: `/webservices/homeautoswitch.lua?switchcmd=getbasicdevicestats&ain=<identifier>` Leerzeichen mit %20 ersetzen und ohne `&sid=`
     -   `startulesubscription`: DECT-ULE-Geräteanmeldung starten
 
 -   Readonly States
@@ -97,7 +97,8 @@
     -   `subscriptionstate`: "0"=Anmeldung läuft nicht / "1"=Anmeldung läuft / "2"=timeout / "3"=sonstiger Error
 
 ![States_remote_1.png](img/States_remote_1.png)</br>
-![States_remote_2.png](img/States_remote_2.png)
+![States_remote_2.png](img/States_remote_2.png)</br>
+![States_own_request.png](img/States_own_request.png)
 
 [Zusammenfassung](#zusammenfassung)
 
@@ -501,10 +502,11 @@
 
 [Zusammenfassung](#zusammenfassung)
 
--   `devicestatistic.temperature.count`: Anzahl der Werte
--   `devicestatistic.temperature.datatime`: Attribute enthält den Unix-Timestamp der letzten Aktualisierung
--   `devicestatistic.temperature.grid`: Zeitliche Abstand/Auflösung in Sekunden
--   `devicestatistic.temperature.value`: Der Inhalt ist eine count-Anzahl kommaseparierte Liste von Werten. Werte mit „-“ sind unbekannt
+-   `devicestatistic.<energy|power|voltage>.chart`: Array_JSON mit Zeit und Werte
+-   `devicestatistic.<energy|power|voltage>.count`: Anzahl der Werte
+-   `devicestatistic.<energy|power|voltage>.datatime`: Attribute enthält den Unix-Timestamp der letzten Aktualisierung
+-   `devicestatistic.<energy|power|voltage>.grid`: Zeitliche Abstand/Auflösung in Sekunden
+-   `devicestatistic.<energy|power|voltage>.value`: Der Inhalt ist eine count-Anzahl kommaseparierte Liste von Werten. Werte mit „-“ sind unbekannt
 
 ![States_dect_statistic_1.png](img/States_dect_statistic_1.png)</br>
 ![States_dect_statistic_2.png](img/States_dect_statistic_2.png)
@@ -513,6 +515,7 @@
 
 [Zusammenfassung](#zusammenfassung)
 
+-   `devicestatistic.<energy|power|voltage>.chart`: Array_JSON mit Zeit und Werte
 -   `devicestatistic.temperature.count`: Anzahl der Werte
 -   `devicestatistic.temperature.datatime`: Attribute enthält den Unix-Timestamp der letzten Aktualisierung
 -   `devicestatistic.temperature.grid`: Zeitliche Abstand/Auflösung in Sekunden
