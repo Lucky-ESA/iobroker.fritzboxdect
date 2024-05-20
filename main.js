@@ -1220,13 +1220,17 @@ class Fritzboxdect extends utils.Adapter {
         return valtfnew;
     }
 
-    getIcon(mask, name) {
+    getIcon(mask, name, dp_name) {
         const masks = (mask >>> 0).toString(2).split("").reverse().join("");
-        const pic = typeof name != "undefined" ? name.split(" ").pop() : "";
+        const pic = typeof name != "undefined" ? name.split(" ").pop() : "NOK";
         if (masks.toString()[12] === "1") return constants.pics["Group"];
         else if (constants.pics[pic]) return constants.pics[pic];
         else if (masks.toString()[18] === "1") return constants.pics["Blind"];
+        else if (masks.toString()[17] === "1") return constants.pics[500];
         else if (masks.toString()[4] === "1") return constants.pics["FUN"];
+        else if (masks.toString()[6] === "1") return constants.pics[302];
+        else if (dp_name === "TRIGGER") return constants.pics["trigger"];
+        else if (dp_name === "TEMPLATE") return constants.pics["templates"];
         else return constants.pics["Unbekannt"];
     }
 
