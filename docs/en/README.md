@@ -262,7 +262,19 @@
 
 [Summary](#summary)
 
--   Currently unknown
+-   States that can be set
+
+    -   `name`: Change the name of the actuator
+
+-   Readonly States
+    -   `alert.lastalertchgtimestamp`: Time of last alarm state change
+    -   `alert.state`: open(1)/closed(2)
+    -   `etsiunitinfo`: [Please refer](#readonly-states)
+    -   `battery`: Battery charge level in percent
+    -   `batterylow`: false or true: battery charge level low - please change battery
+
+![States_dect_350_1.png](img/States_dect_350_1.png)</br>
+![States_dect_350_2.png](img/States_dect_350_2.png)
 
 ### DECT 400
 

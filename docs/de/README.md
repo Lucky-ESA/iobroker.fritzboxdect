@@ -262,7 +262,19 @@
 
 [Zusammenfassung](#zusammenfassung)
 
--   Derzeit unbekannt
+-   States die gesetzt werden können
+
+    -   `name`: Name vom Aktor ändern
+
+-   Readonly States
+    -   `alert.lastalertchgtimestamp`: Zeitpunkt der letzten Alarmzustandsänderung
+    -   `alert.state`: offen(1)/geschlossen(2)
+    -   `etsiunitinfo`: [Siehe](#readonly-states)
+    -   `battery`: Batterieladezustand in Prozent
+    -   `batterylow`: false oder true: Batterieladezustand niedrig - bitte Batterie wechseln
+
+![States_dect_350_1.png](img/States_dect_350_1.png)</br>
+![States_dect_350_2.png](img/States_dect_350_2.png)
 
 ### DECT 400
 
