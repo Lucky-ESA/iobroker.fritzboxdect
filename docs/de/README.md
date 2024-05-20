@@ -472,7 +472,7 @@
         -   <color> //Farbe oder Farbtemperatur
         -   <dialhelper> //Rufansage
         -   <sun_simulation> //Licht Sonnenauf- und Sonnenuntergangsimulation
-        -   <sub_templates> //gruppierte Templates, Szenarien
+        -   <subs_templates> //gruppierte Templates, Szenarien
         -   <main_wifi> //WLAN an/aus
         -   <guest_wifi> //Gast-WLAN an/aus
         -   <tam_control> //Anrufbeantworter an/aus

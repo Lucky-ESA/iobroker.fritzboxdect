@@ -473,7 +473,7 @@
         -   <color> //color or color temperature
         -   <dialhelper> //call announcement
         -   <sun_simulation> //Light sunrise and sunset simulation
-        -   <sub_templates> //grouped templates, scenarios
+        -   <subs_templates> //grouped templates, scenarios
         -   <main_wifi> //WLAN on/off
         -   <guest_wifi> //Guest WiFi on/off
         -   <tam_control> //Answering machine on/off
