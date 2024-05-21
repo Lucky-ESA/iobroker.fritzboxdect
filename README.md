@@ -5,7 +5,6 @@
 [![NPM version](https://img.shields.io/npm/v/iobroker.fritzboxdect.svg)](https://www.npmjs.com/package/iobroker.fritzboxdect)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.fritzboxdect.svg)](https://www.npmjs.com/package/iobroker.fritzboxdect)
 ![Number of Installations](https://iobroker.live/badges/fritzboxdect-installed.svg)
-![Current version in stable repository](https://iobroker.live/badges/fritzboxdect-stable.svg)
 
 [![NPM](https://nodei.co/npm/iobroker.fritzboxdect.png?downloads=true)](https://nodei.co/npm/iobroker.fritzboxdect/)
 
@@ -15,12 +14,20 @@
 
 Control all Fritz!DECT devices with ioBroker. Multiple Fritz boxes can be created.
 
+## Required
+
+-   Node 18 or 20
+-   JS-Controller >= 5.0.19
+-   Admin >= 6.13.16
+-   Fritz OS >= 7.0
+
 ## Known devices
 
 -   FRITZ!DECT Repeater 100
--   FRITZ!DECT Repeater 100 100 with temperature
+-   FRITZ!DECT Repeater 100 with temperature
 -   FRITZ!DECT 200
 -   FRITZ!DECT 210
+-   FRITZ!DECT 300
 -   FRITZ!DECT 301
 -   FRITZ!DECT 302
 -   Fritz Comet
@@ -29,7 +36,7 @@ Control all Fritz!DECT devices with ioBroker. Multiple Fritz boxes can be create
 -   FRITZ!Powerline 546E
 -   Rollotron 1213
 -   HAN-FUN Door/Window contact
--   Possible Zigbree 3.0
+-   Possible ZigBee 3.0
 
 ## Description
 
