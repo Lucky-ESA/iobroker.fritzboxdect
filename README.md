@@ -13,9 +13,23 @@
 
 ## fritzboxdect adapter for ioBroker
 
-Control Fritz DECT Devices
+Control all Fritz!DECT devices with ioBroker. Multiple Fritz boxes can be created.
 
 ## Known devices
+
+-   FRITZ!DECT Repeater 100
+-   FRITZ!DECT Repeater 100 100 with temperature
+-   FRITZ!DECT 200
+-   FRITZ!DECT 210
+-   FRITZ!DECT 301
+-   FRITZ!DECT 302
+-   Fritz Comet
+-   FRITZ!DECT 440
+-   FRITZ!DECT 500
+-   FRITZ!Powerline 546E
+-   Rollotron 1213
+-   HAN-FUN Door/Window contact
+-   Possible Zigbree 3.0
 
 ## Description
 
