@@ -17,7 +17,6 @@
                 "zh-cn": "首次出版"
             }
         },
-        "title": "fritzboxdect",
         "titleLang": {
             "en": "fritzboxdect",
             "de": "fritzboxdect",
@@ -45,8 +44,12 @@
             "zh-cn": "控制弗里茨 DECT"
         },
         "authors": ["Lucky-ESA <github@luckyskills.de>"],
-        "keywords": ["fritz", "fritzbox", "iobroker", "dect"],
-        "license": "MIT",
+        "keywords": ["fritz", "fritzbox", "dect"],
+        "licenseInformation": {
+            "license": "MIT",
+            "type": "free"
+        },
+        "tier": 3,
         "platform": "Javascript/Node.js",
         "main": "main.js",
         "icon": "fritzboxdect.png",
