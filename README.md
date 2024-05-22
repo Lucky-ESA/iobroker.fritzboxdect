@@ -8,7 +8,9 @@
 
 [![NPM](https://nodei.co/npm/iobroker.fritzboxdect.png?downloads=true)](https://nodei.co/npm/iobroker.fritzboxdect/)
 
-**Tests:** ![Test and Release](https://github.com/Lucky-ESA/ioBroker.fritzboxdect/workflows/Test%20and%20Release/badge.svg)
+**Tests:**
+
+[![Test and Release](https://github.com/Lucky-ESA/ioBroker.fritzboxdect/actions/workflows/test-and-release.yml/badge.svg)](https://github.com/Lucky-ESA/ioBroker.fritzboxdect/actions/workflows/test-and-release.yml)
 
 ## fritzboxdect adapter for ioBroker
 

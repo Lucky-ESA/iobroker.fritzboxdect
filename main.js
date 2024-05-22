@@ -472,7 +472,7 @@ class Fritzboxdect extends utils.Adapter {
                 return;
             }
             const folder = id.split(".")[4];
-            this.log.info(`${fritz}.${device}.identifier`);
+            this.log.info(`sendFromChannel: ${fritz}.${device}.identifier`);
             const device_Id = await this.getStateAsync(`${fritz}.${device}.identifier`);
             if (device_Id == null || typeof device_Id["val"] != "string" || device_Id["val"] == null) {
                 this.log.info(`Cannot found identifier!`);
@@ -498,7 +498,6 @@ class Fritzboxdect extends utils.Adapter {
             let button_val;
             let sendstr = "";
             let tsoll = 0;
-            this.log.info(lastsplit);
             let type_val;
             let icon_val;
             let len_meta = 0;
