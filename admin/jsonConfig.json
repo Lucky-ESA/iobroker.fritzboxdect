@@ -34,7 +34,7 @@
                         {
                             "type": "text",
                             "attr": "ip_name",
-                            "width": 50,
+                            "width": 150,
                             "title": "ipname",
                             "tooltip": "IPNAME",
                             "filter": true,
@@ -42,7 +42,7 @@
                             "default": "",
                             "style": {
                                 "textAlign": "center",
-                                "width": 50
+                                "width": 150
                             }
                         },
                         {
