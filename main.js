@@ -8,8 +8,11 @@
 // you need to create an adapter
 const utils = require("@iobroker/adapter-core");
 const apiFB = require("./lib/api");
+const monitorFB = require("./lib/callmonitor.js");
 const helper = require("./lib/helper");
 const constants = require("./lib/constants");
+const macmonitor = require("./lib/mac");
+const tr064 = require("./lib/tr-064");
 
 class Fritzboxdect extends utils.Adapter {
     /**
@@ -29,6 +32,12 @@ class Fritzboxdect extends utils.Adapter {
         this.createDevice = helper.createDevice;
         this.createChannels = helper.createChannels;
         this.createColorTemplate = helper.createColorTemplate;
+        this.createCallmonitor = helper.createCallmonitor;
+        this.createCallLog = helper.createCallLog;
+        this.createPhonebook = helper.createPhonebook;
+        this.createAbsence = helper.createAbsence;
+        this.createAbsenceFolder = helper.createAbsenceFolder;
+        this.createStateTR064 = helper.createStateTR064;
         this.sleepTimer = null;
         this.dect_device = {};
         this.clients = {};
@@ -36,6 +45,7 @@ class Fritzboxdect extends utils.Adapter {
         this.deviceCheck = null;
         this.lang = "de";
         this.viewdebug = false;
+        this.country = {};
     }
 
     /**
@@ -124,9 +134,31 @@ class Fritzboxdect extends utils.Adapter {
             dev.status = false;
             dev.dp = this.forbidden_ip(dev.ip);
             dev.apiFritz = new apiFB(dev, this);
+            const dev_monitor = {
+                dp: dev.dp,
+                password: dev.password,
+                ip: dev.ip,
+                dect_interval: dev.dect_interval,
+                activ: dev.activ,
+                user: dev.user,
+                mac: this.config.macs,
+                interval: this.config.max_interval,
+                tr_interval: dev.tr_interval,
+                phone: dev.phone,
+                protocol: dev.protocol,
+            };
+            dev.monitorFB = new monitorFB(dev_monitor, this);
+            dev.monitorMAC = new macmonitor(dev_monitor, this);
+            dev.tr064 = new tr064(dev_monitor, this);
             dev.apiFritz.on("status", this.status_fritz.bind(this));
             dev.apiFritz.on("data", this.data_fritz.bind(this));
             dev.apiFritz.on("dect", this.dect_fritz.bind(this));
+            if (this.config.max_interval > 0) {
+                const ismonitor = dev.monitorMAC.start();
+                if (!ismonitor) {
+                    await this.delObjectAsync(`${dev.dp}.Presence`, { recursive: true });
+                }
+            }
             const online = await dev.apiFritz.osversion();
             if (online === 0) {
                 this.log.warn(`Fritzbox ${dev.ip} cannot be reached - ${JSON.stringify(online)}`);
@@ -134,6 +166,9 @@ class Fritzboxdect extends utils.Adapter {
             }
             dev.status = true;
             let login;
+            this.log.info(`Create TR-064 States folder.`);
+            await this.createStateTR064(dev);
+            dev.tr064.start();
             login = await dev.apiFritz.login();
             if (login === "BLOCK") {
                 login = await dev.apiFritz.login();
@@ -141,6 +176,26 @@ class Fritzboxdect extends utils.Adapter {
             if (login) {
                 this.log.info(`Connected to Fritzbox ${dev.ip} - Create device!`);
                 await this.createDevice(dev, login);
+                if (dev.call) {
+                    this.log.info(`Create Callmonitor folder.`);
+                    await this.createCallmonitor(dev);
+                } else {
+                    await this.delObjectAsync(`${dev.dp}.TR_064.Callmonitor`, { recursive: true });
+                }
+                if (dev.call && dev.calllist > 0) {
+                    if (dev.calllist > 100) dev.calllist = 100;
+                    this.log.info(`Create Call logs folder.`);
+                    await this.createCallLog(dev);
+                } else {
+                    await this.delObjectAsync(`${dev.dp}.TR_064.Calllists`, { recursive: true });
+                }
+                if (dev.call && dev.phone > 0) {
+                    if (dev.calllist > 100) dev.calllist = 100;
+                    this.log.info(`Create phonebook folder.`);
+                    await this.createPhonebook(dev);
+                } else {
+                    await this.delObjectAsync(`${dev.dp}.TR_064.Phonebooks`, { recursive: true });
+                }
                 const devices = await dev.apiFritz.fritzRequest(
                     "GET",
                     "/webservices/homeautoswitch.lua?switchcmd=getdevicelistinfos&sid=",
@@ -176,6 +231,9 @@ class Fritzboxdect extends utils.Adapter {
             }
             this.clients[dev.dp] = dev;
             this.clients[dev.dp].apiFritz.start(dev);
+            if (dev.call) {
+                this.clients[dev.dp].monitorFB.connect(dev);
+            }
         }
         this.deviceCheck = this.setInterval(
             async () => {
@@ -373,6 +431,11 @@ class Fritzboxdect extends utils.Adapter {
             this.deviceCheck = null;
             for (const id in this.clients) {
                 this.clients[id].apiFritz.destroy();
+                this.clients[id].monitorMAC.destroy();
+                this.clients[id].tr064.destroy();
+                if (this.clients[id].call) {
+                    this.clients[id].monitorFB.destroy();
+                }
             }
             callback();
         } catch (e) {
@@ -415,6 +478,11 @@ class Fritzboxdect extends utils.Adapter {
             }
             if (lastsplit === "startulesubscription") {
                 this.clients[fritz].apiFritz.getCommand("GET", `&switchcmd=startulesubscription`, id_ack, state.val);
+                this.setAckFlag(id_ack);
+                return;
+            }
+            if (lastsplit === "sendCommand") {
+                this.clients[fritz].tr064.sendCommand(fritz, state.val);
                 this.setAckFlag(id_ack);
                 return;
             }
@@ -1157,7 +1225,32 @@ class Fritzboxdect extends utils.Adapter {
             return;
         }
         if (typeof obj === "object" && obj.message) {
-            if (obj.command === "getIconList") {
+            if (obj.command === "getIPList") {
+                try {
+                    let ip_array = [];
+                    const ips = [];
+                    if (obj && obj.message && obj.message.fritzip && obj.message.fritzip.fritzips) {
+                        ip_array = obj.message.fritzip.fritzips;
+                    } else if (adapterconfigs && adapterconfigs.native && adapterconfigs.native.macs) {
+                        ip_array = adapterconfigs.native.macs;
+                    }
+                    if (ip_array && Object.keys(ip_array).length > 0) {
+                        for (const ip of ip_array) {
+                            const label = ip.ip;
+                            ips.push({ label: label, value: label });
+                        }
+                        ips.sort((a, b) => (a.label > b.label ? 1 : b.label > a.label ? -1 : 0));
+                        this.sendTo(obj.from, obj.command, ips, obj.callback);
+                    } else {
+                        this.sendTo(obj.from, obj.command, [], obj.callback);
+                    }
+                } catch (error) {
+                    delete this.double_call[obj._id];
+                    this.sendTo(obj.from, obj.command, [], obj.callback);
+                }
+                delete this.double_call[obj._id];
+                return;
+            } else if (obj.command === "getIconList") {
                 try {
                     let icon_array = [];
                     const icons = [];

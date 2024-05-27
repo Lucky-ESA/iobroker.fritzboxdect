@@ -33,6 +33,20 @@
                         },
                         {
                             "type": "text",
+                            "attr": "ip_name",
+                            "width": 50,
+                            "title": "ipname",
+                            "tooltip": "IPNAME",
+                            "filter": true,
+                            "sort": true,
+                            "default": "",
+                            "style": {
+                                "textAlign": "center",
+                                "width": 50
+                            }
+                        },
+                        {
+                            "type": "text",
                             "attr": "ip",
                             "width": 200,
                             "title": "fritz_ip",
@@ -155,6 +169,66 @@
                             "style": {
                                 "width": 60
                             }
+                        },
+                        {
+                            "type": "checkbox",
+                            "attr": "call",
+                            "width": 60,
+                            "title": "callmonitor",
+                            "tooltip": "Callmonitor_tip",
+                            "filter": false,
+                            "sort": false,
+                            "default": false,
+                            "style": {
+                                "width": 60
+                            }
+                        },
+                        {
+                            "type": "number",
+                            "attr": "calllist",
+                            "disabled": "!data.call",
+                            "width": 60,
+                            "title": "callList",
+                            "tooltip": "callList_tip",
+                            "filter": false,
+                            "sort": false,
+                            "default": 0,
+                            "min": 0,
+                            "max": 100,
+                            "step": 1,
+                            "style": {
+                                "width": 60
+                            }
+                        },
+                        {
+                            "type": "checkbox",
+                            "attr": "phone",
+                            "width": 60,
+                            "title": "phonebook",
+                            "tooltip": "phonebook_tip",
+                            "filter": false,
+                            "sort": false,
+                            "default": false,
+                            "style": {
+                                "width": 60
+                            }
+                        },
+                        {
+                            "type": "number",
+                            "attr": "tr_interval",
+                            "disabled": "!data.call",
+                            "width": 60,
+                            "title": "tr_interval",
+                            "tooltip": "tr_interval_tip",
+                            "filter": false,
+                            "sort": false,
+                            "default": 0,
+                            "min": 0,
+                            "max": 100,
+                            "step": 1,
+                            "style": {
+                                "width": 60
+                            }
                         }
                     ]
                 }
@@ -200,6 +274,103 @@
                             "crop": true
                         }
                     ]
+                }
+            }
+        },
+        "tab3": {
+            "type": "panel",
+            "label": "Tab mac",
+            "items": {
+                "_headerMAC": {
+                    "type": "header",
+                    "text": "Info mac",
+                    "size": 2
+                },
+                "macs": {
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "noDelete": false,
+                    "type": "table",
+                    "style": {
+                        "textAlign": "center"
+                    },
+                    "items": [
+                        {
+                            "type": "checkbox",
+                            "attr": "active",
+                            "title": "active",
+                            "tooltip": "ACTIVe",
+                            "width": "30px",
+                            "filter": true,
+                            "sort": true,
+                            "default": false,
+                            "style": {
+                                "textAlign": "center"
+                            }
+                        },
+                        {
+                            "type": "selectSendTo",
+                            "title": "fritzip",
+                            "tooltip": "FRITZIP",
+                            "attr": "ip",
+                            "width": "100px",
+                            "disabled": "!data.active",
+                            "jsonData": "{\"fritzip\":{\"fritzips\":${JSON.stringify(globalData.fritz)}}}",
+                            "command": "getIPList",
+                            "alsoDependsOn": ["fritz"]
+                        },
+                        {
+                            "type": "text",
+                            "attr": "mac_name",
+                            "disabled": "!data.active",
+                            "title": "macname",
+                            "tooltip": "MACNAME",
+                            "width": "100px",
+                            "filter": true,
+                            "sort": true,
+                            "default": ""
+                        },
+                        {
+                            "type": "text",
+                            "attr": "mac",
+                            "disabled": "!data.active",
+                            "title": "macadress",
+                            "tooltip": "MACADRESS",
+                            "filter": true,
+                            "sort": true,
+                            "default": "",
+                            "width": "100px"
+                        },
+                        {
+                            "type": "number",
+                            "attr": "off_time",
+                            "disabled": "!data.active",
+                            "title": "offtime",
+                            "tooltip": "OFFTIME",
+                            "filter": false,
+                            "sort": false,
+                            "default": 10,
+                            "min": 0,
+                            "max": 1440,
+                            "step": 1,
+                            "width": "30px"
+                        }
+                    ]
+                },
+                "dividerafterdevice": {
+                    "newLine": true,
+                    "type": "divider"
+                },
+                "max_interval": {
+                    "type": "number",
+                    "newLine": true,
+                    "sm": 3,
+                    "label": "MAX_interval",
+                    "default": 10,
+                    "min": 0,
+                    "max": 1440,
+                    "step": 1
                 }
             }
         }

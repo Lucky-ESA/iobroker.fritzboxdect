@@ -43,8 +43,14 @@
             "uk": "Контроль Fritz DECT",
             "zh-cn": "控制弗里茨 DECT"
         },
-        "authors": ["Lucky-ESA <github@luckyskills.de>"],
-        "keywords": ["fritz", "fritzbox", "dect"],
+        "authors": [
+            "Lucky-ESA <github@luckyskills.de>"
+        ],
+        "keywords": [
+            "fritz",
+            "fritzbox",
+            "dect"
+        ],
         "licenseInformation": {
             "license": "MIT",
             "type": "free"
@@ -67,8 +73,12 @@
             "config": "json"
         },
         "docs": {
-            "en": ["docs/en/README.md"],
-            "de": ["docs/de/README.md"]
+            "en": [
+                "docs/en/README.md"
+            ],
+            "de": [
+                "docs/de/README.md"
+            ]
         },
         "dependencies": [
             {
@@ -83,7 +93,9 @@
     },
     "native": {
         "fritz": [],
-        "icons": []
+        "icons": [],
+        "macs": [],
+        "max_interval": 10
     },
     "objects": [],
     "instanceObjects": [

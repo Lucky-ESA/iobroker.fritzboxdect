@@ -15,6 +15,7 @@
 ## fritzboxdect adapter for ioBroker
 
 Control all Fritz!DECT devices with ioBroker. Multiple Fritz boxes can be created.
+Also supports TR-064 protocol with call monitoring, recent calls and phonebook.
 
 ## Required
 
