@@ -9,6 +9,7 @@
 -   [Instanz Einstellungen](#instanz-einstellungen)
     -   [Einstellungen TAB Fritzbox](#instanz-konfiguration-tab-fritzbox-erstellen)
     -   [Einstellungen TAB Symbole](#instanz-konfiguration-tab-symbole-erstellen)
+    -   [TAB MAC Überwachung](#instanz-konfiguration-tab-mac-überwachung)
 -   [Remote Steuerung](#remote)
 -   [Geräte](#dect-geräte)
     -   [Nur lesen States](#readonly-states)
@@ -26,6 +27,13 @@
     -   [Gruppen](#groups)
     -   [Vorlagen](#templates)
     -   [Trigger](#triggers)
+-   [TR-064 Protokoll](#tr-064-protokoll)
+    -   [Anrufüberwachung](#anrufüberwachung)
+    -   [Anruflisten](#anrufliste)
+    -   [Telefonbücher](#telefonbücher)
+    -   [Abwesendheitserkennung](#abwesendheitserkennung)
+    -   [Befehle und Infos](#befehle-und-infos)
+    -   [Blockly](#blockly)
 
 # Instanz Einstellungen
 
@@ -46,6 +54,10 @@
 -   `Fenster öffnen` Zeit die bei hkr.windowopenactiv angewendet werden soll (Thermostate - in Minuten)
 -   `DECT Intervall` Intervall für die Aktualisierung der DECT und Gruppen. Je mehr Geräte vorhanden sind um so länger benötigit die Aktualisierung und dann macht 1 Sekunde kein Sinn. Benötigt der Adapter länger als der Intervall, wird die Aktaulisierung geskippt.
 -   `Vorlagenintervall` Intervall für die Aktualisierung der Templates und Trigger. Kann mit 0 deaktiviert werden.
+-   `Anrufüberwachung` Abwesenheitserkennung aktivieren
+-   `Anrufliste` Anzahl der Anrufer als JSON (Abwesenheitserkennung muss aktiviert sein)
+-   `Telefonbuch` Alle Telefonbücker runterladen (Abwesenheitserkennung muss aktiviert sein)
+-   `TR-Intervall` TR-064 Aktualisierungsintervall
 
 ![instance_2.png](img/instance_2.png)
 
@@ -57,6 +69,18 @@
 ![instance_3.png](img/instance_3.png)
 
 ![instance_4.png](img/instance_4.png)
+
+### Instanz Konfiguration TAB MAC-Überwachung
+
+-   `Active` Abwesenheitserkennung aktivieren/deaktivieren
+-   `Fritzbox-IP auswählen` IP einer angelegten Fritzbox
+-   `Name` Name
+-   `MAC` MAC Adresse
+-   `Offline` Zeit die ein Telefon Offline sein muss um als Offline gesetzt zu werden
+
+-   `Intervall für den Status der MAC-Adressen in Minuten` Intervall für den Status der MAC-Adressen in Minuten
+
+![instance_5.png](img/instance_5.png)
 
 [Zusammenfassung](#zusammenfassung)
 
@@ -543,3 +567,588 @@
 ![States_dect_color_1.png](img/States_dect_color_1.png)</br>
 ![States_dect_color_2.png](img/States_dect_color_2.png)</br>
 ![States_dect_color_3.png](img/States_dect_color_3.png)
+
+### TR-064 Protokoll
+
+[Zusammenfassung](#zusammenfassung)
+
+![tr-064_all_objects.png](img/tr-064_all_objects.png)
+
+# Anrufüberwachung
+
+[Zusammenfassung](#zusammenfassung)
+
+-   `Calllists.incomming` eingehende Anrufer
+-   `Calllists.missed` Anrufe in Abwesenheit
+-   `Calllists.outgoing` ausgehende Anrufe
+    -   `Calllists.incomming.count` Anrufe gesamt
+    -   `Calllists.incomming.json` Anrufe als JSON - Anzahl in der Instanz einstellbar
+
+```JSON
+[
+  {
+    "id": "2381",
+    "type": "1",
+    "caller": "0111111111",
+    "called": "SIP: 12121212",
+    "callednumber": "12121212",
+    "name": "Eltern",
+    "numbertype": "sip",
+    "device": "Kitchen",
+    "port": "10",
+    "date": "28.05.24 17:50",
+    "duration": "0:01",
+    "count": "",
+    "path": "",
+    "sym": ">"
+  }
+]
+```
+
+![tr-064_callmonitor.png](img/tr-064_callmonitor.png)
+
+# Anrufliste
+
+[Zusammenfassung](#zusammenfassung)
+
+-   `Callmonitor.connect` aktuelles Telefonat
+-   `Callmonitor.inbound` eingehender Anruf
+-   `Callmonitor.lastcall` letzter Anruf
+-   `Callmonitor.outbound` ausgehender Anrzf
+    -   `Callmonitor.connect.callee` angerufener
+    -   `Callmonitor.connect.calleename` Name angerufener
+    -   `Callmonitor.connect.caller` Anrufer
+    -   `Callmonitor.connect.callername` Name Anrufer
+    -   `Callmonitor.connect.extension` Klingelzeit
+    -   `Callmonitor.connect.id` ID
+    -   `Callmonitor.connect.json` JSON (siehe unten)
+    -   `Callmonitor.connect.sip` SIP
+    -   `Callmonitor.connect.timestamp` Zeitstempel
+    -   `Callmonitor.connect.type` Type
+-   `Callmonitor.calldata` JSON letzte Aktion
+-   `Callmonitor.status` Status der Überwachung
+
+```JSON
+{
+  "rawdata": "27.05.24 14:57:03;CALL;1;20;1111111;0222222222#;SIP0;",
+  "date": "2024-05-27T12:57:03.000Z",
+  "id": "1",
+  "timestamp": 1716814623697,
+  "kind": "Call",
+  "extension": "20",
+  "caller": "1111111",
+  "callername": "Alle (Rundruf)",
+  "callee": "0222222222#",
+  "calleename": "Eltern",
+  "sip": "SIP0",
+  "duration": 0,
+  "type": "CALL",
+}
+```
+
+![tr-064_calllist.png](img/tr-064_calllist.png)
+
+# Telefonbücher
+
+[Zusammenfassung](#zusammenfassung)
+
+-   `Phonebooks.phonebook_x` Telefonbuch als JSON
+
+```JSON
+[
+  {
+    "category": "0",
+    "realname": "Alle (Rundruf)",
+    "uniqueid": "5",
+    "email": "",
+    "number": "**9",
+    "imageURL": ""
+  },
+  {
+    "category": "0",
+    "realname": "Max Mustermann",
+    "uniqueid": "15",
+    "email": "",
+    "number": "+11111111",
+    "imageURL": ""
+  },
+]
+```
+
+![tr-064_phone.png](img/tr-064_phone.png)
+
+# Abwesendheitserkennung
+
+[Zusammenfassung](#zusammenfassung)
+
+-   `currentoffline` Geräte offline. Ist der Wert höher als der Wert in der Instanz Einstellung wird das Geräte Offline gesetzt und hier 0.
+-   `ip` IP vom Geräte
+-   `json` Alle States als JSON
+-   `lastoffline` letzte mal Offline
+-   `lastonline` letzte mal Online
+-   `mac` MAC Adresse
+-   `name` Name vom Geräte (aus der Fritzbox)
+-   `namefritz` Name vom Geräte (aus der Instanz Einstellung)
+-   `status` Status true=online/false=offline
+
+```JSON
+{
+  "ip": "192.168.2.1",
+  "mac": "1B:C9:FF:11:5F:26",
+  "mac_object": "1B_C9_FF_11_5F_26",
+  "name": "Mama",
+  "online_time": 1716957445184,
+  "offline_time": 0,
+  "offline_time_temp": 0,
+  "offline_minutes": 0,
+  "active": true,
+  "interval": 600000,
+  "last_check": 0,
+  "name_fritz": "Galaxy-S23",
+  "ip_fritz": "192.168.2.199",
+  "interface_fritz": "802.11",
+  "source_fritz": "DHCP",
+  "remaining_fritz": 0,
+  "active_fritz": 1
+}
+```
+
+![tr-064_presence.png](img/tr-064_presence.png)
+
+# Befehle und Infos
+
+[Zusammenfassung](#zusammenfassung)
+
+-   `States.downstream` Downstream in Bits
+-   `States.error` Fehlermeldung
+-   `States.externalIPv4` IP4
+-   `States.externalIPv6` IP6
+-   `States.externalIPv6Prefix` IP6 Präfix
+-   `States.firmware` aktuelle Firmware
+-   `States.hardware` Hardware
+-   `States.lastupdate` letzte Update
+-   `States.mac` MAC Adresse
+-   `States.protocol` Logeinträge als JSON
+-   `States.response` Antwort vom Befehl (States.sendCommand) als JSON
+-   `States.responseXML` Antwort vom Befehl (States.sendCommand) als XML
+-   `States.sendCommand` Befehl senden (siehe unten)
+-   `States.sendCommandPossible` Alle Services als JSON
+-   `States.serialnumber` Seriennummer
+-   `States.status` Status der Fritzbox
+-   `States.upstream` Upstream in Bits
+-   `States.uptime` wie lange Online
+
+# Logeinträge als JSON
+
+```JSON
+[
+  {
+    "0": "29.05.24 08:03:39 Information des Anbieters über die Geschwindigkeit des Internetzugangs (verfügbare Bitrate): 264608/46440 kbit/s"
+  },
+]
+```
+
+# Beispiel Befehl für Anrufbeantworter einschalten
+
+```JSON
+{
+    "service": "urn:dslforum-org:service:X_AVM-DE_TAM:1",
+    "action": "SetEnable",
+    "params": {
+        "NewIndex": "0",
+        "NewEnable": "1"
+    },
+    "html": false, // true für HTML entities in Klartext umwandeln (&amp; -> &)
+    "tag": "", // Hier den Tagnamen vom Link eintragen (link muss leer bleiben) -> Beispiel Anrufliste oder siehe auch Blockly
+    "link": "", // Link abfragen und bearbeiten - Dann hier eintragen (tag muss leer bleiben) -> Beispiel Anrufliste oder siehe auch Blockly
+}
+```
+
+# Nachrichten laden
+
+```JSON
+{
+    "service": "urn:dslforum-org:service:X_AVM-DE_TAM:1",
+    "action": "GetMessageList",
+    "params": {},
+    "html": true, // true für replace in XML -> &amp; = &
+    "tag": "",
+    "link": "",
+}
+```
+
+# Antwort
+
+```JSON
+ <?xml version="1.0"?>
+    <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"> <s:Body>
+        <u:GetMessageListResponse xmlns:u="urn:dslforum-org:service:X_AVM-DE_TAM:1">
+            <NewURL>http://192.168.2.1:49000/tamcalllist.lua?sid=4f4ac54ac29b9a14&amp;tamindex=0</NewURL> // TAG = NewURL
+        </u:GetMessageListResponse>
+    </s:Body>
+</s:Envelope>
+
+{
+  "s:envelope": {
+    "s:body": {
+      "u:getmessagelistresponse": {
+        "newurl": "http://192.168.2.1:49000/tamcalllist.lua?sid=d2b0b88ba85b790b&tamindex=0"
+      }
+    }
+  }
+}
+```
+
+# Nachrichten mit Link laden
+
+```JSON
+{
+    "service": "urn:dslforum-org:service:X_AVM-DE_TAM:1",
+    "action": "GetMessageList",
+    "params": {},
+    "html": true, // true für replace in XML -> &amp; = &
+    "tag": "", // Muss dann leer bleiben
+    "link": "http://192.168.2.1:49000/tamcalllist.lua?sid=d2b0b88ba85b790b&tamindex=0",
+}
+```
+
+# Nachrichten mit TAG sofort laden
+
+```JSON
+{
+    "service": "urn:dslforum-org:service:X_AVM-DE_TAM:1",
+    "action": "GetMessageList",
+    "params": {},
+    "html": true, // true für replace in XML -> &amp; = &
+    "tag": "NewURL",
+    "link": "", // Muss dann leer bleiben
+}
+```
+
+![tr-064_states.png](img/tr-064_states.png)
+
+### Blockly
+
+[Zusammenfassung](#zusammenfassung)
+
+-   Als Beispiele Nachrichten vom Anrufbeantworter laden wobei diese ller ist.
+-   Alle Antworten werden auch in `States.response` und `States.responseXML` geschrieben
+
+```JSON
+{
+    "service": "urn:dslforum-org:service:X_AVM-DE_TAM:1", -> SERVICE-ID
+    "action": "GetMessageList", -> Action
+    "params": {
+      "NewIndex": "0", -> Parameter 1 + Wert 1 // 0 für Anfrufbeantworter 1 oder 1 für Anrufbeantworter 2
+    },
+    "html": true, -> HTML umwandeln
+    "tag": "", -> HTML TAG
+    "link": "", -> Link
+}
+```
+
+![tr-064_blockly_all.png](img/tr-064_blockly_all.png)
+
+-   Es können Links ausgelesen werden um diese weiter zu bearbeiten. Kann bei der Anrufliste angewandt werden um noch mehr Attribute hinzuzufügen (Beispiel &days=2 oder &max=20). Die sid muss nicht ersetzt werden!!!
+
+![tr-064_blockly_link.png](img/tr-064_blockly_link.png)
+
+-   Wenn der TAG bekannt ist kann die Liste auch sofort geladen werden.
+
+![tr-064_blockly_tag.png](img/tr-064_blockly_tag.png)
+
+-   Natürlich können alle Befehle auch mit Javascript abgesetzt werden.
+
+```JAVA
+var data = {
+    "ip":"192.168.2.1",
+    "service":"urn:dslforum-org:service:X_AVM-DE_TAM:1",
+    "action":"GetMessageList",
+    "param_1":"NewIndex",
+    "val_1":"0",
+    "param_2":"",
+    "val_2":"",
+    "link":"",
+    "tag":"NewURL",
+    "html":true
+}
+sendTo('fritzboxdect.0', 'getTRRequest', data, function (result) {
+    if (result.error) {
+        console.error(result.error);
+    } else {
+        console.log("Result: " + JSON.stringify(result));
+    }
+});
+```
+
+![tr-064_blockly_java.png](img/tr-064_blockly_java.png)
+
+[Zusammenfassung](#zusammenfassung)
+
+# Services
+
+```JSON
+[
+  {
+    "servicetype": "urn:dslforum-org:service:DeviceInfo:1",
+    "serviceid": "urn:DeviceInfo-com:serviceId:DeviceInfo1",
+    "controlurl": "/upnp/control/deviceinfo",
+    "eventsuburl": "/upnp/control/deviceinfo",
+    "scpdurl": "/deviceinfoSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:DeviceConfig:1",
+    "serviceid": "urn:DeviceConfig-com:serviceId:DeviceConfig1",
+    "controlurl": "/upnp/control/deviceconfig",
+    "eventsuburl": "/upnp/control/deviceconfig",
+    "scpdurl": "/deviceconfigSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:Layer3Forwarding:1",
+    "serviceid": "urn:Layer3Forwarding-com:serviceId:Layer3Forwarding1",
+    "controlurl": "/upnp/control/layer3forwarding",
+    "eventsuburl": "/upnp/control/layer3forwarding",
+    "scpdurl": "/layer3forwardingSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:LANConfigSecurity:1",
+    "serviceid": "urn:LANConfigSecurity-com:serviceId:LANConfigSecurity1",
+    "controlurl": "/upnp/control/lanconfigsecurity",
+    "eventsuburl": "/upnp/control/lanconfigsecurity",
+    "scpdurl": "/lanconfigsecuritySCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:ManagementServer:1",
+    "serviceid": "urn:ManagementServer-com:serviceId:ManagementServer1",
+    "controlurl": "/upnp/control/mgmsrv",
+    "eventsuburl": "/upnp/control/mgmsrv",
+    "scpdurl": "/mgmsrvSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:Time:1",
+    "serviceid": "urn:Time-com:serviceId:Time1",
+    "controlurl": "/upnp/control/time",
+    "eventsuburl": "/upnp/control/time",
+    "scpdurl": "/timeSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:UserInterface:1",
+    "serviceid": "urn:UserInterface-com:serviceId:UserInterface1",
+    "controlurl": "/upnp/control/userif",
+    "eventsuburl": "/upnp/control/userif",
+    "scpdurl": "/userifSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:X_AVM-DE_Storage:1",
+    "serviceid": "urn:X_AVM-DE_Storage-com:serviceId:X_AVM-DE_Storage1",
+    "controlurl": "/upnp/control/x_storage",
+    "eventsuburl": "/upnp/control/x_storage",
+    "scpdurl": "/x_storageSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:X_AVM-DE_WebDAVClient:1",
+    "serviceid": "urn:X_AVM-DE_WebDAV-com:serviceId:X_AVM-DE_WebDAVClient1",
+    "controlurl": "/upnp/control/x_webdav",
+    "eventsuburl": "/upnp/control/x_webdav",
+    "scpdurl": "/x_webdavSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:X_AVM-DE_UPnP:1",
+    "serviceid": "urn:X_AVM-DE_UPnP-com:serviceId:X_AVM-DE_UPnP1",
+    "controlurl": "/upnp/control/x_upnp",
+    "eventsuburl": "/upnp/control/x_upnp",
+    "scpdurl": "/x_upnpSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:X_AVM-DE_Speedtest:1",
+    "serviceid": "urn:X_AVM-DE_Speedtest-com:serviceId:X_AVM-DE_Speedtest1",
+    "controlurl": "/upnp/control/x_speedtest",
+    "eventsuburl": "/upnp/control/x_speedtest",
+    "scpdurl": "/x_speedtestSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:X_AVM-DE_RemoteAccess:1",
+    "serviceid": "urn:X_AVM-DE_RemoteAccess-com:serviceId:X_AVM-DE_RemoteAccess1",
+    "controlurl": "/upnp/control/x_remote",
+    "eventsuburl": "/upnp/control/x_remote",
+    "scpdurl": "/x_remoteSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:X_AVM-DE_MyFritz:1",
+    "serviceid": "urn:X_AVM-DE_MyFritz-com:serviceId:X_AVM-DE_MyFritz1",
+    "controlurl": "/upnp/control/x_myfritz",
+    "eventsuburl": "/upnp/control/x_myfritz",
+    "scpdurl": "/x_myfritzSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:X_VoIP:1",
+    "serviceid": "urn:X_VoIP-com:serviceId:X_VoIP1",
+    "controlurl": "/upnp/control/x_voip",
+    "eventsuburl": "/upnp/control/x_voip",
+    "scpdurl": "/x_voipSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:X_AVM-DE_OnTel:1",
+    "serviceid": "urn:X_AVM-DE_OnTel-com:serviceId:X_AVM-DE_OnTel1",
+    "controlurl": "/upnp/control/x_contact",
+    "eventsuburl": "/upnp/control/x_contact",
+    "scpdurl": "/x_contactSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:X_AVM-DE_Dect:1",
+    "serviceid": "urn:X_AVM-DE_Dect-com:serviceId:X_AVM-DE_Dect1",
+    "controlurl": "/upnp/control/x_dect",
+    "eventsuburl": "/upnp/control/x_dect",
+    "scpdurl": "/x_dectSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:X_AVM-DE_TAM:1",
+    "serviceid": "urn:X_AVM-DE_TAM-com:serviceId:X_AVM-DE_TAM1",
+    "controlurl": "/upnp/control/x_tam",
+    "eventsuburl": "/upnp/control/x_tam",
+    "scpdurl": "/x_tamSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:X_AVM-DE_AppSetup:1",
+    "serviceid": "urn:X_AVM-DE_AppSetup-com:serviceId:X_AVM-DE_AppSetup1",
+    "controlurl": "/upnp/control/x_appsetup",
+    "eventsuburl": "/upnp/control/x_appsetup",
+    "scpdurl": "/x_appsetupSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:X_AVM-DE_Homeauto:1",
+    "serviceid": "urn:X_AVM-DE_Homeauto-com:serviceId:X_AVM-DE_Homeauto1",
+    "controlurl": "/upnp/control/x_homeauto",
+    "eventsuburl": "/upnp/control/x_homeauto",
+    "scpdurl": "/x_homeautoSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:X_AVM-DE_Homeplug:1",
+    "serviceid": "urn:X_AVM-DE_Homeplug-com:serviceId:X_AVM-DE_Homeplug1",
+    "controlurl": "/upnp/control/x_homeplug",
+    "eventsuburl": "/upnp/control/x_homeplug",
+    "scpdurl": "/x_homeplugSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:X_AVM-DE_Filelinks:1",
+    "serviceid": "urn:X_AVM-DE_Filelinks-com:serviceId:X_AVM-DE_Filelinks1",
+    "controlurl": "/upnp/control/x_filelinks",
+    "eventsuburl": "/upnp/control/x_filelinks",
+    "scpdurl": "/x_filelinksSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:X_AVM-DE_Auth:1",
+    "serviceid": "urn:X_AVM-DE_Auth-com:serviceId:X_AVM-DE_Auth1",
+    "controlurl": "/upnp/control/x_auth",
+    "eventsuburl": "/upnp/control/x_auth",
+    "scpdurl": "/x_authSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:X_AVM-DE_HostFilter:1",
+    "serviceid": "urn:X_AVM-DE_HostFilter-com:serviceId:X_AVM-DE_HostFilter1",
+    "controlurl": "/upnp/control/x_hostfilter",
+    "eventsuburl": "/upnp/control/x_hostfilter",
+    "scpdurl": "/x_hostfilterSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:X_AVM-DE_USPController:1",
+    "serviceid": "urn:X_AVM-DE_USPController-com:serviceId:X_AVM-DE_USPController1",
+    "controlurl": "/upnp/control/x_uspcontroller",
+    "eventsuburl": "/upnp/control/x_uspcontroller",
+    "scpdurl": "/x_uspcontrollerSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:WLANConfiguration:1",
+    "serviceid": "urn:WLANConfiguration-com:serviceId:WLANConfiguration1",
+    "controlurl": "/upnp/control/wlanconfig1",
+    "eventsuburl": "/upnp/control/wlanconfig1",
+    "scpdurl": "/wlanconfigSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:WLANConfiguration:2",
+    "serviceid": "urn:WLANConfiguration-com:serviceId:WLANConfiguration2",
+    "controlurl": "/upnp/control/wlanconfig2",
+    "eventsuburl": "/upnp/control/wlanconfig2",
+    "scpdurl": "/wlanconfigSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:WLANConfiguration:3",
+    "serviceid": "urn:WLANConfiguration-com:serviceId:WLANConfiguration3",
+    "controlurl": "/upnp/control/wlanconfig3",
+    "eventsuburl": "/upnp/control/wlanconfig3",
+    "scpdurl": "/wlanconfigSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:Hosts:1",
+    "serviceid": "urn:LanDeviceHosts-com:serviceId:Hosts1",
+    "controlurl": "/upnp/control/hosts",
+    "eventsuburl": "/upnp/control/hosts",
+    "scpdurl": "/hostsSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:LANEthernetInterfaceConfig:1",
+    "serviceid": "urn:LANEthernetIfCfg-com:serviceId:LANEthernetInterfaceConfig1",
+    "controlurl": "/upnp/control/lanethernetifcfg",
+    "eventsuburl": "/upnp/control/lanethernetifcfg",
+    "scpdurl": "/ethifconfigSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:LANHostConfigManagement:1",
+    "serviceid": "urn:LANHCfgMgm-com:serviceId:LANHostConfigManagement1",
+    "controlurl": "/upnp/control/lanhostconfigmgm",
+    "eventsuburl": "/upnp/control/lanhostconfigmgm",
+    "scpdurl": "/lanhostconfigmgmSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:WANCommonInterfaceConfig:1",
+    "serviceid": "urn:WANCIfConfig-com:serviceId:WANCommonInterfaceConfig1",
+    "controlurl": "/upnp/control/wancommonifconfig1",
+    "eventsuburl": "/upnp/control/wancommonifconfig1",
+    "scpdurl": "/wancommonifconfigSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:WANDSLInterfaceConfig:1",
+    "serviceid": "urn:WANDSLIfConfig-com:serviceId:WANDSLInterfaceConfig1",
+    "controlurl": "/upnp/control/wandslifconfig1",
+    "eventsuburl": "/upnp/control/wandslifconfig1",
+    "scpdurl": "/wandslifconfigSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:X_AVM-DE_WANMobileConnection:1",
+    "serviceid": "urn:X_AVM-DE_WANMobileConnection-com:serviceId:X_AVM-DE_WANMobileConnection1",
+    "controlurl": "/upnp/control/x_wanmobileconn",
+    "eventsuburl": "/upnp/control/x_wanmobileconn",
+    "scpdurl": "/x_wanmobileconnSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:WANDSLLinkConfig:1",
+    "serviceid": "urn:WANDSLLinkConfig-com:serviceId:WANDSLLinkConfig1",
+    "controlurl": "/upnp/control/wandsllinkconfig1",
+    "eventsuburl": "/upnp/control/wandsllinkconfig1",
+    "scpdurl": "/wandsllinkconfigSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:WANEthernetLinkConfig:1",
+    "serviceid": "urn:WANEthernetLinkConfig-com:serviceId:WANEthernetLinkConfig1",
+    "controlurl": "/upnp/control/wanethlinkconfig1",
+    "eventsuburl": "/upnp/control/wanethlinkconfig1",
+    "scpdurl": "/wanethlinkconfigSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:WANPPPConnection:1",
+    "serviceid": "urn:WANPPPConnection-com:serviceId:WANPPPConnection1",
+    "controlurl": "/upnp/control/wanpppconn1",
+    "eventsuburl": "/upnp/control/wanpppconn1",
+    "scpdurl": "/wanpppconnSCPD.xml"
+  },
+  {
+    "servicetype": "urn:dslforum-org:service:WANIPConnection:1",
+    "serviceid": "urn:WANIPConnection-com:serviceId:WANIPConnection1",
+    "controlurl": "/upnp/control/wanipconnection1",
+    "eventsuburl": "/upnp/control/wanipconnection1",
+    "scpdurl": "/wanipconnSCPD.xml"
+  }
+]
+```
+
+[Zusammenfassung](#zusammenfassung)

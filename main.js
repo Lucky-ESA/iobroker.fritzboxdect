@@ -139,6 +139,7 @@ class Fritzboxdect extends utils.Adapter {
                 password: dev.password,
                 ip: dev.ip,
                 dect_interval: dev.dect_interval,
+                calllist: dev.calllist,
                 activ: dev.activ,
                 user: dev.user,
                 mac: this.config.macs,
@@ -482,7 +483,7 @@ class Fritzboxdect extends utils.Adapter {
                 return;
             }
             if (lastsplit === "sendCommand") {
-                this.clients[fritz].tr064.sendCommand(fritz, state.val);
+                this.clients[fritz].tr064.sendCommand(fritz, state.val, null);
                 this.setAckFlag(id_ack);
                 return;
             }
@@ -1272,6 +1273,77 @@ class Fritzboxdect extends utils.Adapter {
                 } catch (error) {
                     delete this.double_call[obj._id];
                     this.sendTo(obj.from, obj.command, [], obj.callback);
+                }
+                delete this.double_call[obj._id];
+                return;
+            } else if (obj.command === "getTRRequest") {
+                this.log.debug("onMessage: " + JSON.stringify(obj));
+                if (obj.message) {
+                    const message = obj.message;
+                    if (message.ip && message.ip != "") {
+                        const ip = this.forbidden_ip(message.ip);
+                        if (this.clients[ip]) {
+                            const send = {
+                                service: "",
+                                action: "",
+                                params: {},
+                                html: false,
+                                tag: "",
+                                link: "",
+                            };
+                            if (
+                                message.service &&
+                                message.service != "" &&
+                                message.service != "" &&
+                                message.service != "SERVICE-ID"
+                            ) {
+                                send.service = message.service;
+                                if (
+                                    message.action &&
+                                    message.action != "" &&
+                                    message.action != "" &&
+                                    message.action != "Action"
+                                ) {
+                                    send.action = message.action;
+                                    if (message.param_1 && message.param_1 != "") {
+                                        send.params[message.param_1] = message.val_1 != "" ? message.val_1 : 0;
+                                    }
+                                    if (message.param_2 && message.param_2 != "") {
+                                        send.params[message.param_2] = message.val_2 != "" ? message.val_2 : 0;
+                                    }
+                                    if (message.html) {
+                                        send.html = message.html;
+                                    }
+                                    if (message.link && message.link != "") {
+                                        send.link = message.link;
+                                    }
+                                    if (message.tag && message.tag != "") {
+                                        send.tag = message.tag;
+                                    }
+                                    if (message.tag != "" && message.link != "") {
+                                        this.sendTo(
+                                            obj.from,
+                                            obj.command,
+                                            [{ error: "Value link & tag is not allowed" }],
+                                            obj.callback,
+                                        );
+                                    } else {
+                                        this.clients[ip].tr064.sendCommand(ip, send, obj);
+                                    }
+                                } else {
+                                    this.sendTo(obj.from, obj.command, [{ error: "Missing action" }], obj.callback);
+                                }
+                            } else {
+                                this.sendTo(obj.from, obj.command, [{ error: "Missing service" }], obj.callback);
+                            }
+                        } else {
+                            this.sendTo(obj.from, obj.command, [{ error: "Missing client" }], obj.callback);
+                        }
+                    } else {
+                        this.sendTo(obj.from, obj.command, [{ error: "Missing IP" }], obj.callback);
+                    }
+                } else {
+                    this.sendTo(obj.from, obj.command, [{ error: "Missing message" }], obj.callback);
                 }
                 delete this.double_call[obj._id];
                 return;
