@@ -864,6 +864,39 @@
 
 ![tr-064_blockly_tag.png](img/tr-064_blockly_tag.png)
 
+-   Load info from an IP
+
+```JSON
+{
+    "service": "urn:dslforum-org:service:Hosts:1",
+    "action": "X_AVM-DE_GetSpecificHostEntryByIp",
+    "params": {
+      "NewIPAddress": "192.168.2.18",
+    },
+    "html": true,
+    "tag": "",
+    "link": "",
+}
+```
+
+![tr-064_blockly_ip.png](img/tr-064_blockly_ip.png)
+
+-   Load Mesh-Topologie
+
+```JSON
+{
+    "service": "urn:dslforum-org:service:Hosts:1",
+    "action": "X_AVM-DE_GetMeshListPath",
+    "params": {},
+    "html": true,
+    "tag": "NewX_AVM-DE_MeshListPath",
+    "link": "",
+}
+```
+
+![tr-064_blockly_mesh_1.png](img/tr-064_blockly_mesh_1.png)</br>
+![tr-064_blockly_mesh_2.png](img/tr-064_blockly_mesh_2.png)
+
 -   Of course, all commands can also be issued with Javascript.
 
 ```JAVA

@@ -861,6 +861,39 @@
 
 ![tr-064_blockly_tag.png](img/tr-064_blockly_tag.png)
 
+-   Infos über eine IP laden
+
+```JSON
+{
+    "service": "urn:dslforum-org:service:Hosts:1",
+    "action": "X_AVM-DE_GetSpecificHostEntryByIp",
+    "params": {
+      "NewIPAddress": "192.168.2.18",
+    },
+    "html": true,
+    "tag": "",
+    "link": "",
+}
+```
+
+![tr-064_blockly_ip.png](img/tr-064_blockly_ip.png)
+
+-   Mesh-Topologie laden
+
+```JSON
+{
+    "service": "urn:dslforum-org:service:Hosts:1",
+    "action": "X_AVM-DE_GetMeshListPath",
+    "params": {},
+    "html": true,
+    "tag": "NewX_AVM-DE_MeshListPath",
+    "link": "",
+}
+```
+
+![tr-064_blockly_mesh_1.png](img/tr-064_blockly_mesh_1.png)</br>
+![tr-064_blockly_mesh_2.png](img/tr-064_blockly_mesh_2.png)
+
 -   Natürlich können alle Befehle auch mit Javascript abgesetzt werden.
 
 ```JAVA
