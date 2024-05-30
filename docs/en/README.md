@@ -4,6 +4,10 @@
 
 [Zurück zur README](/README.md)
 
+# Setup
+
+-   To activate the call monitor on FRITZ!Box, dial #96*5* from any phone connected to it.
+
 # Summary
 
 -   [Instance Settings](#instance-settings)
@@ -608,7 +612,7 @@
 ]
 ```
 
-![tr-064_callmonitor.png](img/tr-064_callmonitor.png)
+![tr-064_calllist.png](img/tr-064_calllist.png)
 
 # Call list
 
@@ -618,11 +622,11 @@
 -   `Callmonitor.inbound` incoming call
 -   `Callmonitor.lastcall` last call
 -   `Callmonitor.outbound` outgoing call
-    -   `Callmonitor.connect.callee` callee
-    -   `Callmonitor.connect.calleename` Called name
+    -   `Callmonitor.connect.called` called
+    -   `Callmonitor.connect.calledname` Called name
     -   `Callmonitor.connect.caller` caller
     -   `Callmonitor.connect.callername` Caller name
-    -   `Callmonitor.connect.extension` ring time
+    -   `Callmonitor.connect.extension` Extension
     -   `Callmonitor.connect.id` ID
     -   `Callmonitor.connect.json` JSON (see below)
     -   `Callmonitor.connect.sip` SIP
@@ -649,7 +653,7 @@
 }
 ```
 
-![tr-064_calllist.png](img/tr-064_calllist.png)
+![tr-064_callmonitor.png](img/tr-064_callmonitor.png)
 
 # Phonebooks
 

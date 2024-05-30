@@ -4,6 +4,10 @@
 
 [Zurück zur README](/README.md)
 
+# Setup
+
+-   Um den Anrufmonitor an der FRITZ!Box zu aktivieren, muss von einem angeschlossenen Telefon die Nummer #96*5* gewählt werden.
+
 # Zusammenfassung
 
 -   [Instanz Einstellungen](#instanz-einstellungen)
@@ -605,7 +609,7 @@
 ]
 ```
 
-![tr-064_callmonitor.png](img/tr-064_callmonitor.png)
+![tr-064_callmonitor.png](img/tr-064_calllist.png)
 
 # Anrufliste
 
@@ -615,11 +619,11 @@
 -   `Callmonitor.inbound` eingehender Anruf
 -   `Callmonitor.lastcall` letzter Anruf
 -   `Callmonitor.outbound` ausgehender Anrzf
-    -   `Callmonitor.connect.callee` angerufener
-    -   `Callmonitor.connect.calleename` Name angerufener
+    -   `Callmonitor.connect.called` angerufener
+    -   `Callmonitor.connect.calledname` Name angerufener
     -   `Callmonitor.connect.caller` Anrufer
     -   `Callmonitor.connect.callername` Name Anrufer
-    -   `Callmonitor.connect.extension` Klingelzeit
+    -   `Callmonitor.connect.extension` Nebenstelle
     -   `Callmonitor.connect.id` ID
     -   `Callmonitor.connect.json` JSON (siehe unten)
     -   `Callmonitor.connect.sip` SIP
@@ -646,7 +650,7 @@
 }
 ```
 
-![tr-064_calllist.png](img/tr-064_calllist.png)
+![tr-064_calllist.png](img/tr-064_callmonitor.png)
 
 # Telefonbücher
 
