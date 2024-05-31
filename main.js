@@ -159,6 +159,8 @@ class Fritzboxdect extends utils.Adapter {
                 if (!ismonitor) {
                     await this.delObjectAsync(`${dev.dp}.Presence`, { recursive: true });
                 }
+            } else {
+                await this.delObjectAsync(`${dev.dp}.Presence`, { recursive: true });
             }
             const online = await dev.apiFritz.osversion();
             if (online === 0) {
