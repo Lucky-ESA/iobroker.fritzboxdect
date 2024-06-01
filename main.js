@@ -489,6 +489,66 @@ class Fritzboxdect extends utils.Adapter {
                 this.setAckFlag(id_ack);
                 return;
             }
+            if (lastsplit === "wlan24") {
+                const wlan24 = {
+                    service: "urn:dslforum-org:service:WLANConfiguration:1",
+                    action: "SetEnable",
+                    params: {
+                        NewEnable: state.val ? "1" : "0",
+                    },
+                    html: true,
+                    tag: "",
+                    link: "",
+                };
+                this.clients[fritz].tr064.sendCommand(fritz, JSON.stringify(wlan24), null);
+                this.setAckFlag(id_ack);
+                return;
+            }
+            if (lastsplit === "wlan50") {
+                const wlan50 = {
+                    service: "urn:dslforum-org:service:WLANConfiguration:2",
+                    action: "SetEnable",
+                    params: {
+                        NewEnable: state.val ? "1" : "0",
+                    },
+                    html: true,
+                    tag: "",
+                    link: "",
+                };
+                this.clients[fritz].tr064.sendCommand(fritz, JSON.stringify(wlan50), null);
+                this.setAckFlag(id_ack);
+                return;
+            }
+            if (lastsplit === "wlanguest") {
+                const wlanguest = {
+                    service: "urn:dslforum-org:service:WLANConfiguration:3",
+                    action: "SetEnable",
+                    params: {
+                        NewEnable: state.val ? "1" : "0",
+                    },
+                    html: true,
+                    tag: "",
+                    link: "",
+                };
+                this.clients[fritz].tr064.sendCommand(fritz, JSON.stringify(wlanguest), null);
+                this.setAckFlag(id_ack);
+                return;
+            }
+            if (lastsplit === "wlanguestname") {
+                const wlanguest = {
+                    service: "urn:dslforum-org:service:WLANConfiguration:3",
+                    action: "SetSSID",
+                    params: {
+                        NewSSID: state.val,
+                    },
+                    html: true,
+                    tag: "",
+                    link: "",
+                };
+                this.clients[fritz].tr064.sendCommand(fritz, JSON.stringify(wlanguest), null);
+                this.setAckFlag(id_ack);
+                return;
+            }
             this.sendcommand(id, state, String(lastsplit), fritz);
         }
     }
