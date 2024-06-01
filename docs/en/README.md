@@ -689,6 +689,7 @@
 [Summary](#summary)
 
 -   `currentoffline` devices offline. If the value is higher than the value in the instance setting, the device is set offline and here 0.
+-   `currentonline` Geräte online in minutes.
 -   `ip` IP from device
 -   `json` All states as JSON
 -   `lastoffline` offline for the last time
@@ -703,16 +704,21 @@
   "ip": "192.168.2.1",
   "mac": "1B:C9:FF:11:5F:26",
   "mac_object": "1B_C9_FF_11_5F_26",
-  "name": "Mama",
-  "online_time": 1716957445184,
+  "name": "Papa",
+  "online_time": 1715524156000,
+  "online_utc": "12.05.2024 16:29:16",
+  "online_minutes": 28793,
+  "online_text": "19 days, 23 hours, 52 minutes",
   "offline_time": 0,
+  "offline_utc": "",
   "offline_time_temp": 0,
   "offline_minutes": 0,
+  "offline_text": "",
   "active": true,
-  "interval": 600000,
-  "last_check": 0,
-  "name_fritz": "Galaxy-S23",
-  "ip_fritz": "192.168.2.199",
+  "off_time": 600000,
+  "last_check": 1717251734725,
+  "name_fritz": "Handy-S20",
+  "ip_fritz": "192.168.2.47",
   "interface_fritz": "802.11",
   "source_fritz": "DHCP",
   "remaining_fritz": 0,
