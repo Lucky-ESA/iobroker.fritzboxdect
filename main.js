@@ -13,6 +13,7 @@ const helper = require("./lib/helper");
 const constants = require("./lib/constants");
 const macmonitor = require("./lib/mac");
 const tr064 = require("./lib/tr-064");
+const axios = require("./lib/request");
 
 class Fritzboxdect extends utils.Adapter {
     /**
@@ -246,6 +247,27 @@ class Fritzboxdect extends utils.Adapter {
             60 * 1000 * 60 * 24,
         );
         this.checkDevices();
+    }
+
+    async axiosRequest(dev) {
+        const options_axios = {
+            protocol: dev.protocol,
+            ip: dev.ip,
+            url: dev.link,
+            header: { SoapAction: `${dev.service}#${dev.action}` },
+            publicKey: dev.user,
+            privateKey: dev.password,
+            method: dev.method,
+            data:
+                '<?xml version="1.0" encoding="utf-8"?>' +
+                '<s:Envelope s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"' +
+                '    xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">' +
+                "<s:Body>" +
+                `<u:${dev.action} xmlns:u="${dev.service}">` +
+                `${dev.addNew}` +
+                `</u:${dev.action}></s:Body></s:Envelope>`,
+        };
+        return await axios(options_axios, this);
     }
 
     async checkDevices() {
