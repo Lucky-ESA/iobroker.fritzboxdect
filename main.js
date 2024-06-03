@@ -267,7 +267,7 @@ class Fritzboxdect extends utils.Adapter {
                 `${dev.addNew}` +
                 `</u:${dev.action}></s:Body></s:Envelope>`,
         };
-        return await axios(options_axios, this);
+        return await axios(options_axios);
     }
 
     async checkDevices() {
