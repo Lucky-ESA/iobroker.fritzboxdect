@@ -747,6 +747,10 @@
 -   `States.status` Status der Fritzbox
 -   `States.upstream` Upstream in Bits
 -   `States.uptime` wie lange Online
+-   `States.wlan24` WLAN 2,4 GHz ein- und ausschalten
+-   `States.wlan50` WLAN GHz ein- und ausschalten
+-   `States.wlanguest` WLAN Gastzugang ein- und ausschalten
+-   `States.wlanguestname` SSID von Gastzugang ändern
 
 # Logeinträge als JSON
 
@@ -835,7 +839,28 @@
 }
 ```
 
-![tr-064_states.png](img/tr-064_states.png)
+![tr-064_states_1.png](img/tr-064_states_1.png)</br>
+![tr-064_states_2.png](img/tr-064_states_2.png)
+
+# Traffic Monitoring
+
+-   `States.Traffic.accesstype` Zugriffsgruppe
+-   `States.Traffic.download` Maximale Anzahl von Bytes pro Sekunde in Downstream-Richtung
+-   `States.Traffic.gettotalByteReceive` Gesamte empfangene Bytes abrufen
+-   `States.Traffic.gettotalByteSent` Gesamte gesendete Byte abrufen
+-   `States.Traffic.gettotalPacketsReceive` Gesamtzahl der empfangenen Pakete abrufen
+-   `States.Traffic.gettotalPacketsSent` Gesamtzahl der gesendeten Pakete abrufen
+-   `States.Traffic.groupmode` Name der Synchronisierungsgruppe
+-   `States.Traffic.newds_current_bps` Aktuelle Anzahl der Bytes pro Sekunde in Downstream-Richtung des Multicast-Verkehrs
+-   `States.Traffic.newmc_current_bps` Aktuelle Anzahl der Bytes pro Sekunde in Downstream-Richtung des Home-, Gast- und Multicast-Verkehrs
+-   `States.Traffic.newprio_default_bps` Aktuelle Anzahl der Bytes pro Sekunde in Upstream-Richtung des Standard-Home-Verkehrs
+-   `States.Traffic.newprio_high_bps` Aktuelle Anzahl der Bytes pro Sekunde in Upstream-Richtung des wichtigen Heimverkehrs
+-   `States.Traffic.newprio_low_bps` Aktuelle Anzahl der Bytes pro Sekunde in Upstream-Richtung des Hintergrund-Home-Verkehrs
+-   `States.Traffic.newprio_realtime_bps` Aktuelle Anzahl der Bytes pro Sekunde in Upstream-Richtung des Echtzeit-Heimverkehrs
+-   `States.Traffic.newus_current_bps` Aktuelle Anzahl der Bytes pro Sekunde in Upstream-Richtung
+-   `States.Traffic.upload` Maximale Anzahl von Bytes pro Sekunde in Upstream-Richtung
+
+![tr-064_states_3.png](img/tr-064_states_3.png)
 
 ### Blockly
 

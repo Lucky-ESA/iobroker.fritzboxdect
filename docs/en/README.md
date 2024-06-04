@@ -750,6 +750,10 @@
 -   `States.status` Status of the Fritzbox
 -   `States.upstream` Upstream in bits
 -   `States.uptime` how long online
+-   `States.wlan24` Wifi 2,4 GHz on/off
+-   `States.wlan50` Wifi GHz on/off
+-   `States.wlanguest` Wifi guest access on/off
+-   `States.wlanguestname` Change SSID of guest access
 
 # Log entries as JSON
 
@@ -838,7 +842,28 @@
 }
 ```
 
-![tr-064_states.png](img/tr-064_states.png)
+![tr-064_states_1.png](img/tr-064_states_1.png)</br>
+![tr-064_states_2.png](img/tr-064_states_2.png)
+
+# Traffic Monitoring
+
+-   `States.Traffic.accesstype`Access group
+-   `States.Traffic.download` Max number of bytes per second in downstream direction
+-   `States.Traffic.gettotalByteReceive` Get total byte receive
+-   `States.Traffic.gettotalByteSent` Get total byte sent
+-   `States.Traffic.gettotalPacketsReceive` Get total packets receive
+-   `States.Traffic.gettotalPacketsSent` Get total packets sent
+-   `States.Traffic.groupmode` Name of sync group
+-   `States.Traffic.newds_current_bps` Current number of bytes per second in downstream direction of multicast traffic
+-   `States.Traffic.newmc_current_bps` Current number of bytes per second in downstream direction of home, guest and multicast traffic
+-   `States.Traffic.newprio_default_bps` Current number of bytes per second in upstream direction of default home traffic
+-   `States.Traffic.newprio_high_bps` Current number of bytes per second in upstream direction of important home traffic
+-   `States.Traffic.newprio_low_bps` Current number of bytes per second in upstream direction of background home traffic
+-   `States.Traffic.newprio_realtime_bps` Current number of bytes per second in upstream direction of real-time home traffic
+-   `States.Traffic.newus_current_bps` Current number of bytes per second in upstream direction
+-   `States.Traffic.upload` Max number of bytes per second in upstream direction
+
+![tr-064_states_3.png](img/tr-064_states_3.png)
 
 ### Blockly
 
