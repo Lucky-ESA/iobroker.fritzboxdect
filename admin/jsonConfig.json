@@ -244,14 +244,10 @@
                     "size": 2
                 },
                 "icons": {
+                    "newLine": true,
                     "sm": 12,
-                    "md": 12,
-                    "lg": 12,
                     "noDelete": false,
                     "type": "table",
-                    "style": {
-                        "textAlign": "center"
-                    },
                     "items": [
                         {
                             "type": "text",
@@ -287,14 +283,10 @@
                     "size": 2
                 },
                 "macs": {
+                    "newLine": true,
                     "sm": 12,
-                    "md": 12,
-                    "lg": 12,
                     "noDelete": false,
                     "type": "table",
-                    "style": {
-                        "textAlign": "center"
-                    },
                     "items": [
                         {
                             "type": "checkbox",

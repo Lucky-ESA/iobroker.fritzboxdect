@@ -134,7 +134,6 @@ class Fritzboxdect extends utils.Adapter {
             check_name[dev.ip] = dev.ip;
             dev.status = false;
             dev.dp = this.forbidden_ip(dev.ip);
-            dev.apiFritz = new apiFB(dev, this);
             const dev_monitor = {
                 dp: dev.dp,
                 password: dev.password,
@@ -148,7 +147,9 @@ class Fritzboxdect extends utils.Adapter {
                 tr_interval: dev.tr_interval,
                 phone: dev.phone,
                 protocol: dev.protocol,
+                temp_interval: dev.temp_interval,
             };
+            dev.apiFritz = new apiFB(dev_monitor, this);
             dev.monitorFB = new monitorFB(dev_monitor, this);
             dev.monitorMAC = new macmonitor(dev_monitor, this);
             dev.tr064 = new tr064(dev_monitor, this);
