@@ -150,7 +150,7 @@ class Fritzboxdect extends utils.Adapter {
                 temp_interval: dev.temp_interval,
             };
             dev.apiFritz = new apiFB(dev_monitor, this);
-            dev.monitorFB = new monitorFB(dev_monitor, this);
+            dev.monitorFB = new monitorFB(dev_monitor, this, constants.states);
             dev.monitorMAC = new macmonitor(dev_monitor, this);
             dev.tr064 = new tr064(dev_monitor, this);
             dev.apiFritz.on("status", this.status_fritz.bind(this));
