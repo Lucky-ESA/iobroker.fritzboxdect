@@ -604,6 +604,8 @@
     "duration": "0:01",
     "count": "",
     "path": "",
+    "prefix": "01111",
+    "state": "Muster",
     "sym": ">"
   }
 ]
@@ -647,6 +649,8 @@
   "sip": "SIP0",
   "duration": 0,
   "type": "CALL",
+  "prefix": "02222",
+  "state": "Muster",
 }
 ```
 
