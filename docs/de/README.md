@@ -636,21 +636,26 @@
 
 ```JSON
 {
-  "rawdata": "27.05.24 14:57:03;CALL;1;20;1111111;0222222222#;SIP0;",
-  "date": "2024-05-27T12:57:03.000Z",
-  "id": "1",
-  "timestamp": 1716814623697,
-  "kind": "Call",
-  "extension": "20",
-  "caller": "1111111",
-  "callername": "Alle (Rundruf)",
-  "callee": "0222222222#",
-  "calleename": "Eltern",
+  "lastrawdata": "08.06.24 11:26:36;DISCONNECT;1;0;",
+  "rawdata": [
+    "08.06.24 11:26:29;CALL;1;10;8xxxxxx;01xxxxxxxxx;SIP0;",
+    "08.06.24 11:26:36;DISCONNECT;1;0;"
+  ],
+  "date": "2024-06-08T09:26:36.759Z",
+  "id": 1,
+  "timestamp": 1717838796759,
+  "kind": "HangUp",
+  "extension": 10,
+  "caller": "8xxxxxx",
+  "callername": "All (Phonebook Name)",
+  "called": "01xxxxxxxxx",
+  "calledname": "Handy (Phonebook Name)",
+  "pickup": "",
   "sip": "SIP0",
   "duration": 0,
   "type": "CALL",
-  "prefix": "02222",
-  "state": "Muster",
+  "prefix": "01xx",
+  "state": "Muster"
 }
 ```
 
