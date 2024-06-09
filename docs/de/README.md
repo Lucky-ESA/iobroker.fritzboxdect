@@ -855,6 +855,8 @@
 
 -   `States.Traffic.accesstype` Zugriffsgruppe
 -   `States.Traffic.download` Maximale Anzahl von Bytes pro Sekunde in Downstream-Richtung
+-   `States.Traffic.fritz_monitor` Werte Fritzbox -> Internet -> Online-Monitor
+-   `States.Traffic.fritz_monitor_update` Daten `States.Traffic.fritz_monitor` aktualisieren
 -   `States.Traffic.gettotalByteReceive` Gesamte empfangene Bytes abrufen
 -   `States.Traffic.gettotalByteSent` Gesamte gesendete Byte abrufen
 -   `States.Traffic.gettotalPacketsReceive` Gesamtzahl der empfangenen Pakete abrufen

@@ -497,6 +497,11 @@ class Fritzboxdect extends utils.Adapter {
             const lastsplit = id.split(".").pop();
             const fritz = id.split(".")[2];
             if (!this.clients[fritz]) return;
+            if (lastsplit === "fritz_monitor_update") {
+                this.clients[fritz].apiFritz.loadMonitor();
+                this.setAckFlag(id_ack, { val: false });
+                return;
+            }
             if (lastsplit === "getsubscriptionstate") {
                 this.clients[fritz].apiFritz.getStatusULE();
                 this.setAckFlag(id_ack, { val: false });

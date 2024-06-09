@@ -858,6 +858,8 @@
 
 -   `States.Traffic.accesstype`Access group
 -   `States.Traffic.download` Max number of bytes per second in downstream direction
+-   `States.Traffic.fritz_monitor` Value Fritzbox -> Internet -> Online-Monitor
+-   `States.Traffic.fritz_monitor_update` Update `States.Traffic.fritz_monitor`
 -   `States.Traffic.gettotalByteReceive` Get total byte receive
 -   `States.Traffic.gettotalByteSent` Get total byte sent
 -   `States.Traffic.gettotalPacketsReceive` Get total packets receive
