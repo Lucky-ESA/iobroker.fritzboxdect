@@ -871,6 +871,53 @@
 -   `States.Traffic.newus_current_bps` Aktuelle Anzahl der Bytes pro Sekunde in Upstream-Richtung
 -   `States.Traffic.upload` Maximale Anzahl von Bytes pro Sekunde in Upstream-Richtung
 
+# Online Monitoring
+
+```JSON
+{
+  "LastMonth": {
+    "name": "Vormonat",
+    "time": "743:59",
+    "outgoing": 40321,
+    "incoming": 812748,
+    "total": 853069,
+    "connection": "62"
+  },
+  "ThisWeek": {
+    "name": "Aktuelle Woche",
+    "time": "6:21",
+    "outgoing": 123,
+    "incoming": 911,
+    "total": 1034,
+    "connection": "2"
+  },
+  "Today": {
+    "name": "Heute",
+    "time": "6:21",
+    "outgoing": 123,
+    "incoming": 911,
+    "total": 1034,
+    "connection": "2"
+  },
+  "Yesterday": {
+    "name": "Gestern",
+    "time": "24:00",
+    "outgoing": 1605,
+    "incoming": 45867,
+    "total": 47472,
+    "connection": "2"
+  },
+  "ThisMonth": {
+    "name": "Aktueller Monat",
+    "time": "222:20",
+    "outgoing": 15394,
+    "incoming": 239237,
+    "total": 254631,
+    "connection": "22"
+  }
+}
+```
+
 ![tr-064_states_3.png](img/tr-064_states_3.png)
 
 ### Blockly
