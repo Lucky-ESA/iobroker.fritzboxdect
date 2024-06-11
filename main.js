@@ -173,7 +173,6 @@ class Fritzboxdect extends utils.Adapter {
             let login;
             this.log.info(`Create TR-064 States folder.`);
             await this.createStateTR064(dev);
-            dev.tr064.start();
             login = await dev.apiFritz.login();
             if (login === "BLOCK") {
                 login = await dev.apiFritz.login();
@@ -234,6 +233,7 @@ class Fritzboxdect extends utils.Adapter {
                 }
                 this.setState("info.connection", true, true);
             }
+            dev.tr064.start();
             this.clients[dev.dp] = dev;
             this.clients[dev.dp].apiFritz.start(dev);
             if (dev.call) {
