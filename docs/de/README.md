@@ -920,6 +920,34 @@
 
 ![tr-064_states_3.png](img/tr-064_states_3.png)
 
+# Energy Monitoring
+
+-   `States.Energy.conn_currently` Verbindung aktuell
+-   `States.Energy.conn_last24h` Verbindung der letzten 24 Stunden
+-   `States.Energy.cpu_temperature` CPU Temperatur für echart
+-   `States.Energy.cpu_usage` CPU Last für echart
+-   `States.Energy.cpu_usage_scale` Skalierung (Stunden) für CPU Last und Temperatur für echart
+-   `States.Energy.fon_currently` Fon Anschlüsse aktuell
+-   `States.Energy.fon_last24h` Fon Anschlüsse der letzten 24 Stunden
+-   `States.Energy.lan1` Lan 1 aktiv/deaktiv
+-   `States.Energy.lan2` Lan 2 aktiv/deaktiv
+-   `States.Energy.lan3` Lan 3 aktiv/deaktiv
+-   `States.Energy.lan4` Lan 4 aktiv/deaktiv
+-   `States.Energy.main_currently` Hauptprozessor aktuell
+-   `States.Energy.main_last24h` Hauptprozessor der letzten 24 Stunden
+-   `States.Energy.ram_usage` RAM-Nutzung für echart
+-   `States.Energy.ram_usage_scale` Skalierung (Stunden) RAM-Nutzung für echart
+-   `States.Energy.total_currently` Gesamt aktuell
+-   `States.Energy.total_last24h` Gesamt der letzten 24 Stunden
+-   `States.Energy.usb_currently` USB-Geräte aktuell
+-   `States.Energy.usb_last24h` USB-Geräte der letzten 24 Stunden
+-   `States.Energy.wan` WAN aktiv/deaktiv
+-   `States.Energy.wifi_currently` WLAN aktuell
+-   `States.Energy.wifi_last24h` WLAN der letzten 24 Stunden
+
+![tr-064_states_4.png](img/tr-064_states_4.png)</br>
+![tr-064_states_5.png](img/tr-064_states_5.png)
+
 ### Blockly
 
 [Zusammenfassung](#zusammenfassung)
