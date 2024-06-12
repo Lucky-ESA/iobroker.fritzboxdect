@@ -1442,6 +1442,29 @@ class Fritzboxdect extends utils.Adapter {
                 }
                 delete this.double_call[obj._id];
                 return;
+            } else if (obj.command === "getHTTPRequest") {
+                this.log.debug("onMessage: " + JSON.stringify(obj));
+                if (obj.message) {
+                    const message = obj.message;
+                    if (message.ip && message.ip != "") {
+                        const ip = this.forbidden_ip(message.ip);
+                        if (this.clients[ip]) {
+                            if (message.linkid && message.linkid != "") {
+                                this.clients[ip].apiFritz.sendHTTP(ip, message.linkid, obj);
+                            } else {
+                                this.sendTo(obj.from, obj.command, [{ error: "Missing link-id" }], obj.callback);
+                            }
+                        } else {
+                            this.sendTo(obj.from, obj.command, [{ error: "Missing client" }], obj.callback);
+                        }
+                    } else {
+                        this.sendTo(obj.from, obj.command, [{ error: "Missing IP" }], obj.callback);
+                    }
+                } else {
+                    this.sendTo(obj.from, obj.command, [{ error: "Missing message" }], obj.callback);
+                }
+                delete this.double_call[obj._id];
+                return;
             }
             //this.log.debug("onMessage: " + JSON.stringify(obj));
         }

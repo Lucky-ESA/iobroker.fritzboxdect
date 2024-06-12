@@ -151,17 +151,17 @@ Blockly.Words["tr064_select"] = {
     "zh-cn": "选择 IP",
 };
 Blockly.Words["tr064"] = {
-    en: "Select the IP",
-    de: "IP auswählen",
-    ru: "Выберите IP",
-    pt: "Selecione o IP",
-    nl: "Selecteer het IP",
-    fr: "Sélectionnez l'IP",
-    it: "Selezionare l'IP",
-    es: "Seleccione la IP",
-    pl: "Wybierz IP",
-    uk: "Виберіть IP",
-    "zh-cn": "选择 IP",
+    en: "Select instance",
+    de: "Instanz auswählen",
+    ru: "Выберите экземпляр",
+    pt: "Selecione a instância",
+    nl: "Selecteer instantie",
+    fr: "Sélectionner une instance",
+    it: "Selezionare l'istanza",
+    es: "Seleccionar instancia",
+    pl: "Wybierz instancję",
+    uk: "Виберіть екземпляр",
+    "zh-cn": "选择实例",
 };
 Blockly.Words["tr064_ip"] = {
     en: "IP Fritzbox",
@@ -293,12 +293,23 @@ Blockly.Words["tr064_html"] = {
     uk: "Перетворення html-сутностей",
     "zh-cn": "转换 html 实体",
 };
+Blockly.Words["tr064_linkid"] = {
+    en: "HTTP Link ID",
+    de: "HTTP Link ID",
+    ru: "HTTP Link ID",
+    pt: "ID de ligação HTTP",
+    nl: "HTTP Link ID",
+    fr: "ID du lien HTTP",
+    it: "ID collegamento HTTP",
+    es: "HTTP Link ID",
+    pl: "Identyfikator łącza HTTP",
+    uk: "Код посилання HTTP",
+    "zh-cn": "HTTP 链接标识",
+};
 Blockly.Sendto.blocks["tr064"] =
     '<block type="tr064">' +
-    '     <value name="INSTANCE">' +
-    "     </value>" +
-    '     <value name="IP">' +
-    "     </value>" +
+    '     <field name="INSTANCE"></field>' +
+    '     <field name="IP"></field>' +
     '     <value name="SERVICE">' +
     '         <shadow type="text">' +
     '             <field name="TEXT">SERVICE-ID</field>' +
@@ -339,37 +350,32 @@ Blockly.Sendto.blocks["tr064"] =
     '             <field name="TEXT"></field>' +
     "         </shadow>" +
     "     </value>" +
-    '     <value name="HTML">' +
-    "     </value>" +
-    '     <value name="LOG">' +
-    "     </value>" +
-    '     <value name="STATEMENT">' +
-    "     </value>" +
+    '     <field name="HTML"></field>' +
+    '     <field name="LOG"></field>' +
+    '     <field name="STATEMENT"></field>' +
     "</block>";
 
 Blockly.Blocks["tr064"] = {
     init: function () {
-        var options_user = [];
-        var options_instance = [];
+        const options_user = [];
+        const options_instance = [];
         options_user.push([Blockly.Translate("tr064_select"), "all"]);
         if (typeof main !== "undefined" && main.instances) {
-            for (var i = 0; i < main.instances.length; i++) {
-                var m = main.instances[i].match(/^system.adapter.fritzboxdect.(\d+)$/);
+            for (let i = 0; i < main.instances.length; i++) {
+                const m = main.instances[i].match(/^system.adapter.fritzboxdect.(\d+)$/);
                 if (m) {
-                    var n = parseInt(m[1], 10);
+                    const n = parseInt(m[1], 10);
                     options_instance.push(["fritzboxdect." + n, "." + n]);
                     if (main.objects[main.instances[i]].native.fritz) {
-                        for (var a = 0; a < main.objects[main.instances[i]].native.fritz.length; a++) {
-                            //Checking active in the main.js.
-                            var id = main.objects[main.instances[i]].native.fritz[a].ip;
+                        for (let a = 0; a < main.objects[main.instances[i]].native.fritz.length; a++) {
+                            const id = main.objects[main.instances[i]].native.fritz[a].ip;
                             options_user.push([n + "." + id, id]);
                         }
                     }
                 }
             }
         }
-        if (Object.keys(options_instance).length == 0)
-            options_instance.push([Blockly.Translate("no_instance_found"), ""]);
+        if (options_instance.length == 0) options_instance.push([Blockly.Translate("no_instance_found"), ""]);
 
         this.appendDummyInput("INSTANCE")
             .appendField(Blockly.Translate("tr064"))
@@ -411,25 +417,25 @@ Blockly.Blocks["tr064"] = {
 };
 
 Blockly.JavaScript["tr064"] = function (block) {
-    var dropdown_instance = block.getFieldValue("INSTANCE");
-    var logLevel = block.getFieldValue("LOG");
-    var value_ip = block.getFieldValue("IP");
-    var value_service = Blockly.JavaScript.valueToCode(block, "SERVICE", Blockly.JavaScript.ORDER_ATOMIC);
-    var value_action = Blockly.JavaScript.valueToCode(block, "ACTION", Blockly.JavaScript.ORDER_ATOMIC);
-    var value_param_1 = Blockly.JavaScript.valueToCode(block, "PARAM_1", Blockly.JavaScript.ORDER_ATOMIC);
-    var value_val_1 = Blockly.JavaScript.valueToCode(block, "VAL_1", Blockly.JavaScript.ORDER_ATOMIC);
-    var value_param_2 = Blockly.JavaScript.valueToCode(block, "PARAM_2", Blockly.JavaScript.ORDER_ATOMIC);
-    var value_val_2 = Blockly.JavaScript.valueToCode(block, "VAL_2", Blockly.JavaScript.ORDER_ATOMIC);
-    var value_link = Blockly.JavaScript.valueToCode(block, "LINK", Blockly.JavaScript.ORDER_ATOMIC);
-    var value_tag = Blockly.JavaScript.valueToCode(block, "TAG", Blockly.JavaScript.ORDER_ATOMIC);
-    var value_html = block.getFieldValue("HTML");
+    const dropdown_instance = block.getFieldValue("INSTANCE");
+    const logLevel = block.getFieldValue("LOG");
+    const value_ip = block.getFieldValue("IP");
+    const value_service = Blockly.JavaScript.valueToCode(block, "SERVICE", Blockly.JavaScript.ORDER_ATOMIC);
+    const value_action = Blockly.JavaScript.valueToCode(block, "ACTION", Blockly.JavaScript.ORDER_ATOMIC);
+    const value_param_1 = Blockly.JavaScript.valueToCode(block, "PARAM_1", Blockly.JavaScript.ORDER_ATOMIC);
+    const value_val_1 = Blockly.JavaScript.valueToCode(block, "VAL_1", Blockly.JavaScript.ORDER_ATOMIC);
+    const value_param_2 = Blockly.JavaScript.valueToCode(block, "PARAM_2", Blockly.JavaScript.ORDER_ATOMIC);
+    const value_val_2 = Blockly.JavaScript.valueToCode(block, "VAL_2", Blockly.JavaScript.ORDER_ATOMIC);
+    const value_link = Blockly.JavaScript.valueToCode(block, "LINK", Blockly.JavaScript.ORDER_ATOMIC);
+    const value_tag = Blockly.JavaScript.valueToCode(block, "TAG", Blockly.JavaScript.ORDER_ATOMIC);
+    let value_html = block.getFieldValue("HTML");
     if (value_html === "TRUE" || value_html === "true" || value_html === true) {
         value_html = true;
     } else {
         value_html = false;
     }
 
-    var text = "{\n";
+    let text = "{\n";
     text += '  ip: "' + value_ip + '",\n';
     text += "   service: " + value_service + ",\n";
     text += "   action: " + value_action + ",\n";
@@ -442,15 +448,110 @@ Blockly.JavaScript["tr064"] = function (block) {
     text += "   html: " + value_html + ",\n";
     text += "}";
 
-    var logText;
+    let logText;
     if (logLevel) {
-        logText = "console." + logLevel + '("imap_request: ' + text + '");\n';
+        logText = "console." + logLevel + '("tr-064_request: ' + text + '");\n';
     } else {
         logText = "";
     }
-    var statement;
-    statement = Blockly.JavaScript.statementToCode(block, "STATEMENT");
-    var command = "getTRRequest";
+    const statement = Blockly.JavaScript.statementToCode(block, "STATEMENT");
+    const command = "getTRRequest";
+    return (
+        'sendTo("fritzboxdect' +
+        dropdown_instance +
+        '", "' +
+        command +
+        '", ' +
+        text +
+        ", async function (result) {\n  " +
+        statement +
+        "  });\n" +
+        logText
+    );
+};
+
+Blockly.Sendto.blocks["tr064_http"] =
+    '<block type="tr064_http">' +
+    '     <field name="INSTANCE"></field>' +
+    '     <field name="IP"></field>' +
+    '     <value name="LINKID">' +
+    '         <shadow type="text">' +
+    '             <field name="TEXT">link-id</field>' +
+    "         </shadow>" +
+    "     </value>" +
+    '     <field name="LOG"></field>' +
+    '     <field name="STATEMENT"></field>' +
+    "</block>";
+
+Blockly.Blocks["tr064_http"] = {
+    init: function () {
+        const options_user = [];
+        const options_instance = [];
+        options_user.push([Blockly.Translate("tr064_select"), "all"]);
+        if (typeof main !== "undefined" && main.instances) {
+            for (let i = 0; i < main.instances.length; i++) {
+                const m = main.instances[i].match(/^system.adapter.fritzboxdect.(\d+)$/);
+                if (m) {
+                    const n = parseInt(m[1], 10);
+                    options_instance.push(["fritzboxdect." + n, "." + n]);
+                    if (main.objects[main.instances[i]].native.fritz) {
+                        for (let a = 0; a < main.objects[main.instances[i]].native.fritz.length; a++) {
+                            const id = main.objects[main.instances[i]].native.fritz[a].ip;
+                            options_user.push([n + "." + id, id]);
+                        }
+                    }
+                }
+            }
+        }
+        if (options_instance.length == 0) options_instance.push([Blockly.Translate("no_instance_found"), ""]);
+        this.appendDummyInput("INSTANCE")
+            .appendField(Blockly.Translate("tr064"))
+            .appendField(new Blockly.FieldDropdown(options_instance), "INSTANCE");
+        this.appendDummyInput("IP")
+            .appendField(Blockly.Translate("tr064_ip"))
+            .appendField(new Blockly.FieldDropdown(options_user), "IP");
+        this.appendValueInput("LINKID").appendField(Blockly.Translate("tr064_linkid"));
+        this.appendDummyInput("LOG")
+            .appendField(Blockly.Translate("tr064_log"))
+            .appendField(
+                new Blockly.FieldDropdown([
+                    [Blockly.Translate("tr064_log_none"), ""],
+                    [Blockly.Translate("tr064_log_info"), "log"],
+                    [Blockly.Translate("tr064_log_debug"), "debug"],
+                    [Blockly.Translate("tr064_log_warn"), "warn"],
+                    [Blockly.Translate("tr064_log_error"), "error"],
+                ]),
+                "LOG",
+            );
+        this.appendStatementInput("STATEMENT").setCheck(null);
+        this.setInputsInline(false);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour(Blockly.Sendto.HUE);
+        this.setTooltip(Blockly.Translate("tr064_tooltip"));
+        this.setHelpUrl(Blockly.Translate("tr064_help"));
+    },
+};
+
+Blockly.JavaScript["tr064_http"] = function (block) {
+    const dropdown_instance = block.getFieldValue("INSTANCE");
+    const logLevel = block.getFieldValue("LOG");
+    const value_ip = block.getFieldValue("IP");
+    const value_linkid = Blockly.JavaScript.valueToCode(block, "LINKID", Blockly.JavaScript.ORDER_ATOMIC);
+
+    let text = "{\n";
+    text += '  ip: "' + value_ip + '",\n';
+    text += "   linkid: " + value_linkid + ",\n";
+    text += "}";
+
+    let logText;
+    if (logLevel) {
+        logText = "console." + logLevel + '("tr-064_request: ' + text + '");\n';
+    } else {
+        logText = "";
+    }
+    const statement = Blockly.JavaScript.statementToCode(block, "STATEMENT");
+    const command = "getHTTPRequest";
     return (
         'sendTo("fritzboxdect' +
         dropdown_instance +
