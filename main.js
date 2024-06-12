@@ -235,9 +235,9 @@ class Fritzboxdect extends utils.Adapter {
             }
             dev.tr064.start();
             this.clients[dev.dp] = dev;
-            this.clients[dev.dp].apiFritz.start(dev);
+            this.clients[dev.dp].apiFritz.start();
             if (dev.call) {
-                this.clients[dev.dp].monitorFB.connect(dev);
+                this.clients[dev.dp].monitorFB.connect();
             }
         }
         this.deviceCheck = this.setInterval(
@@ -514,6 +514,11 @@ class Fritzboxdect extends utils.Adapter {
             }
             if (lastsplit === "sendCommand") {
                 this.clients[fritz].tr064.sendCommand(fritz, state.val, null);
+                this.setAckFlag(id_ack);
+                return;
+            }
+            if (lastsplit === "sendHTTPRequest") {
+                this.clients[fritz].apiFritz.sendHTTP(fritz, state.val, null);
                 this.setAckFlag(id_ack);
                 return;
             }
