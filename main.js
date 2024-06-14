@@ -148,11 +148,14 @@ class Fritzboxdect extends utils.Adapter {
                 phone: dev.phone,
                 protocol: dev.protocol,
                 temp_interval: dev.temp_interval,
+                rights: {},
             };
+            dev.tr064 = new tr064(dev_monitor, this);
+            dev.rights = await dev.tr064.loadRights();
+            dev_monitor.rights = dev.rights;
             dev.apiFritz = new apiFB(dev_monitor, this);
             dev.monitorFB = new monitorFB(dev_monitor, this, constants.states);
             dev.monitorMAC = new macmonitor(dev_monitor, this);
-            dev.tr064 = new tr064(dev_monitor, this);
             dev.apiFritz.on("status", this.status_fritz.bind(this));
             dev.apiFritz.on("data", this.data_fritz.bind(this));
             dev.apiFritz.on("dect", this.dect_fritz.bind(this));
