@@ -631,35 +631,40 @@
     -   `Callmonitor.connect.sip` SIP
     -   `Callmonitor.connect.timestamp` Zeitstempel
     -   `Callmonitor.connect.type` Type
+-   `Callmonitor.action` Aktion
+-   `Callmonitor.action_id` Aktion ID vom JSON
 -   `Callmonitor.calldata` JSON letzte Aktion
 -   `Callmonitor.status` Status der Überwachung
 
 ```JSON
 {
-  "lastrawdata": "08.06.24 11:26:36;DISCONNECT;1;0;",
-  "rawdata": [
-    "08.06.24 11:26:29;CALL;1;10;8xxxxxx;01xxxxxxxxx;SIP0;",
-    "08.06.24 11:26:36;DISCONNECT;1;0;"
-  ],
-  "date": "2024-06-08T09:26:36.759Z",
-  "id": 1,
-  "timestamp": 1717838796759,
-  "kind": "HangUp",
-  "extension": 10,
-  "caller": "8xxxxxx",
-  "callername": "All (Phonebook Name)",
-  "called": "01xxxxxxxxx",
-  "calledname": "Handy (Phonebook Name)",
-  "pickup": "",
-  "sip": "SIP0",
-  "duration": 0,
-  "type": "CALL",
-  "prefix": "01xx",
-  "state": "Muster"
+  "0": { // Action ID
+    "lastrawdata": "15.06.24 13:10:43;DISCONNECT;0;0;",
+    "rawdata": [
+      "15.06.24 13:10:38;RING;0;01111111111;8111111;SIP0;",
+      "15.06.24 13:10:43;DISCONNECT;0;0;"
+    ],
+    "date": "2024-06-15T11:10:43.337Z",
+    "id": 0,
+    "timestamp": 1718449843337,
+    "kind": "HangUp",
+    "extension": 0,
+    "caller": "01111111111",
+    "callername": "Test Handy (Test)",
+    "called": "87930045",
+    "calledname": "Test)",
+    "pickup": "",
+    "sip": "SIP0",
+    "duration": 0,
+    "type": "RING",
+    "prefix": 0,
+    "state": ""
+  }
 }
 ```
 
-![tr-064_calllist.png](img/tr-064_callmonitor.png)
+![tr-064_calllist_1.png](img/tr-064_callmonitor_1.png)</br>
+![tr-064_calllist_2.png](img/tr-064_callmonitor_2.png)
 
 # Telefonbücher
 
@@ -752,6 +757,8 @@
 -   `States.responseXML` Antwort vom Befehl (States.sendCommand) als XML
 -   `States.sendCommand` Befehl senden (siehe unten)
 -   `States.sendCommandPossible` Alle Services als JSON
+-   `States.sendHTTPRequest` HTTP Seite auslesen
+-   `States.sendHTTPResponse` HTTP Inhalt (Kann ein JSON oder HTML sein)
 -   `States.serialnumber` Seriennummer
 -   `States.status` Status der Fritzbox
 -   `States.upstream` Upstream in Bits

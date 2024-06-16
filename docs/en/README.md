@@ -634,6 +634,8 @@
     -   `Callmonitor.connect.sip` SIP
     -   `Callmonitor.connect.timestamp` timestamp
     -   `Callmonitor.connect.type` Type
+-   `Callmonitor.action` Action
+-   `Callmonitor.action_id` Action ID from JSON
 -   `Callmonitor.calldata` JSON last action
 -   `Callmonitor.status` Status of the monitoring
 
@@ -662,7 +664,8 @@
 }
 ```
 
-![tr-064_callmonitor.png](img/tr-064_callmonitor.png)
+![tr-064_calllist_1.png](img/tr-064_callmonitor_1.png)</br>
+![tr-064_calllist_2.png](img/tr-064_callmonitor_2.png)
 
 # Phonebooks
 
@@ -755,6 +758,8 @@
 -   `States.responseXML` Response from command (States.sendCommand) as XML
 -   `States.sendCommand` send command (see below)
 -   `States.sendCommandPossible` All services as JSON
+-   `States.sendHTTPRequest` Read HTTP page
+-   `States.sendHTTPResponse` HTTP Content (Can be a JSON or HTML)
 -   `States.serialnumber` serial number
 -   `States.status` Status of the Fritzbox
 -   `States.upstream` Upstream in bits
