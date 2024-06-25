@@ -828,7 +828,11 @@ class Fritzboxdect extends utils.Adapter {
                     break;
                 case "state":
                     if (folder === "simpleonoff") {
-                        dummy = "setsimpleonoff&onoff=" + state.val;
+                        if (state.val === 2) {
+                            dummy = "setswitchtoggle";
+                        } else {
+                            dummy = "setsimpleonoff&onoff=" + state.val;
+                        }
                     } else if (folder === "switch") {
                         dummy = state.val ? "setswitchon" : "setswitchoff";
                     }
