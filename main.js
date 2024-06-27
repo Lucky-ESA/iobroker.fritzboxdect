@@ -813,7 +813,7 @@ class Fritzboxdect extends utils.Adapter {
                         dummy = await this.getStateAsync(`${fritz}.${device}.${folder}.${button_val}.identifier`);
                         if (dummy != null && dummy.val != null) {
                             this.extendObject(`${fritz}.${device}.${folder}.${button_val}`, {
-                                common: { name: state.val.toString(), desc: state.val },
+                                common: { name: state.val.toString(), desc: state.val.toString() },
                             });
                             sendstr = `ain=${encodeURIComponent(dummy.val)}&switchcmd=setname&name=${encodeURIComponent(
                                 state.val,
@@ -822,7 +822,7 @@ class Fritzboxdect extends utils.Adapter {
                     } else {
                         sendstr = `ain=${deviceId}&switchcmd=setname&name=${encodeURIComponent(state.val)}&sid=`;
                         this.extendObject(`${fritz}.${device}`, {
-                            common: { name: state.val.toString(), desc: state.val },
+                            common: { name: state.val.toString(), desc: state.val.toString() },
                         });
                     }
                     break;
@@ -901,7 +901,7 @@ class Fritzboxdect extends utils.Adapter {
         url = url + "&sid=";
         const data = await this.clients[fritz].apiFritz.own_request("GET", url, null, true);
         if (data) {
-            await this.setStateAsync(`${fritz}.DECT_Control.own_request_response`, JSON.stringify(data), true);
+            this.setState(`${fritz}.DECT_Control.own_request_response`, JSON.stringify(data), true);
         }
         this.setAckFlag(id);
     }
@@ -1032,7 +1032,7 @@ class Fritzboxdect extends utils.Adapter {
         const s = Math.round((dummy[1] / 255) * 100);
         const v = Math.round((dummy[2] / 255) * 100);
         const hex = this.hsvToHex(dummy[0], s, v);
-        await this.setStateAsync(device, hex, true);
+        this.setState(device, hex, true);
     }
 
     color_temperature(val) {
