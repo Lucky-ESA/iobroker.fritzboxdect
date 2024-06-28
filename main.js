@@ -53,7 +53,7 @@ class Fritzboxdect extends utils.Adapter {
      * Is called when databases are connected and adapter received configuration.
      */
     async onReady() {
-        this.setState("info.connection", false, true);
+        await this.setState("info.connection", { val: false, ack: true });
         const isChange = await this.configcheck();
         if (isChange) {
             this.log.info(`Encrypt Passwords and restart Adapter!`);
@@ -234,7 +234,7 @@ class Fritzboxdect extends utils.Adapter {
                     this.log.info(`Trigger Datapoints for device ${dev.ip} are created/updated`);
                     await this.createChannels(dev, trigger.triggerlist.trigger, constants, "TRIGGER");
                 }
-                this.setState("info.connection", true, true);
+                await this.setState("info.connection", { val: true, ack: true });
             }
             dev.tr064.start();
             this.clients[dev.dp] = dev;
@@ -901,7 +901,7 @@ class Fritzboxdect extends utils.Adapter {
         url = url + "&sid=";
         const data = await this.clients[fritz].apiFritz.own_request("GET", url, null, true);
         if (data) {
-            this.setState(`${fritz}.DECT_Control.own_request_response`, JSON.stringify(data), true);
+            await this.setState(`${fritz}.DECT_Control.own_request_response`, { val: JSON.stringify(data), ack: true });
         }
         this.setAckFlag(id);
     }
@@ -1032,7 +1032,7 @@ class Fritzboxdect extends utils.Adapter {
         const s = Math.round((dummy[1] / 255) * 100);
         const v = Math.round((dummy[2] / 255) * 100);
         const hex = this.hsvToHex(dummy[0], s, v);
-        this.setState(device, hex, true);
+        await this.setState(device, { val: hex, ack: true });
     }
 
     color_temperature(val) {
@@ -1530,7 +1530,7 @@ class Fritzboxdect extends utils.Adapter {
     async setAckFlag(id, value) {
         try {
             if (id) {
-                this.setState(id, {
+                await this.setState(id, {
                     ack: true,
                     ...value,
                 });

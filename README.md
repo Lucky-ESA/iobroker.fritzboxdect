@@ -33,6 +33,7 @@ Also supports TR-064 protocol with call monitoring, recent calls and phonebook.
 -   FRITZ!DECT 300
 -   FRITZ!DECT 301
 -   FRITZ!DECT 302
+-   FRITZ!DECT 350
 -   Fritz Comet
 -   FRITZ!DECT 440
 -   FRITZ!DECT 500
