@@ -797,9 +797,9 @@ class Fritzboxdect extends utils.Adapter {
                     break;
                 case "blindlevel":
                     state.val = parseInt(state.val.toString());
-                    if (state.val >= 0 && state.val <= 100) dummy = 100 - state.val;
-                    if (state.val >= 0 && state.val <= 100)
+                    if (state.val >= 0 && state.val <= 100) {
                         sendstr = `ain=${deviceId}&switchcmd=setlevelpercentage&level=${state.val}&sid=`;
+                    }
                     break;
                 case "blindvalue":
                     state.val = parseInt(state.val.toString());
