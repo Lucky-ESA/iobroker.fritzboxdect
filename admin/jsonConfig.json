@@ -1,6 +1,9 @@
 {
     "i18n": true,
     "type": "tabs",
+    "tabsStyle": {
+        "width": "calc(100% - 100px)"
+    },
     "items": {
         "tab1": {
             "type": "panel",
@@ -13,7 +16,11 @@
                 },
                 "fritz": {
                     "newLine": true,
+                    "xs": 12,
                     "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "xl": 12,
                     "noDelete": false,
                     "type": "table",
                     "items": [
@@ -245,7 +252,11 @@
                 },
                 "icons": {
                     "newLine": true,
+                    "xs": 12,
                     "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "xl": 12,
                     "noDelete": false,
                     "type": "table",
                     "items": [
@@ -282,7 +293,11 @@
                 },
                 "macs": {
                     "newLine": true,
+                    "xs": 12,
                     "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "xl": 12,
                     "noDelete": false,
                     "type": "table",
                     "items": [
@@ -355,7 +370,11 @@
                 "max_interval": {
                     "type": "number",
                     "newLine": true,
-                    "sm": 3,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4,
                     "label": "MAX_interval",
                     "default": 10,
                     "min": 0,

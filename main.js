@@ -1511,6 +1511,7 @@ class Fritzboxdect extends utils.Adapter {
     }
 
     getIcon(mask, name, dp_name) {
+        if (constants.pics[name] != null) return constants.pics[name];
         const masks = (mask >>> 0).toString(2).split("").reverse().join("");
         const pic = typeof name != "undefined" ? name.split(" ").pop() : "NOK";
         if (masks.toString()[12] === "1") return constants.pics["Group"];
