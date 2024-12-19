@@ -64,7 +64,7 @@ class Fritzboxdect extends utils.Adapter {
         if (obj && obj.common && obj.common.language) {
             try {
                 this.lang = obj.common.language === this.lang ? this.lang : obj.common.language;
-            } catch (e) {
+            } catch {
                 this.lang = "de";
             }
         }
@@ -81,7 +81,7 @@ class Fritzboxdect extends utils.Adapter {
         let devices = [];
         try {
             devices = typeof this.config.fritz === "object" ? JSON.parse(JSON.stringify(this.config.fritz)) : [];
-        } catch (e) {
+        } catch {
             devices = [];
         }
         check_name = {};
@@ -117,7 +117,7 @@ class Fritzboxdect extends utils.Adapter {
                         this.log.warn(`Cannot found password!`);
                         continue;
                     }
-                } catch (e) {
+                } catch {
                     this.log.warn(`Missing User Password!`);
                     continue;
                 }
@@ -129,8 +129,12 @@ class Fritzboxdect extends utils.Adapter {
                 this.log.error(`Duplicate IP ${dev.ip} is not allowed!!!`);
                 continue;
             }
-            if (dev.booster === 0) dev.booster = 5;
-            if (dev.open === 0) dev.open = 5;
+            if (dev.booster === 0) {
+                dev.booster = 5;
+            }
+            if (dev.open === 0) {
+                dev.open = 5;
+            }
             check_name[dev.ip] = dev.ip;
             dev.status = false;
             dev.dp = this.forbidden_ip(dev.ip);
@@ -190,14 +194,18 @@ class Fritzboxdect extends utils.Adapter {
                     await this.delObjectAsync(`${dev.dp}.TR_064.Callmonitor`, { recursive: true });
                 }
                 if (dev.call && dev.calllist > 0) {
-                    if (dev.calllist > 100) dev.calllist = 100;
+                    if (dev.calllist > 100) {
+                        dev.calllist = 100;
+                    }
                     this.log.info(`Create Call logs folder.`);
                     await this.createCallLog(dev);
                 } else {
                     await this.delObjectAsync(`${dev.dp}.TR_064.Calllists`, { recursive: true });
                 }
                 if (dev.call && dev.phone > 0) {
-                    if (dev.calllist > 100) dev.calllist = 100;
+                    if (dev.calllist > 100) {
+                        dev.calllist = 100;
+                    }
                     this.log.info(`Create phonebook folder.`);
                     await this.createPhonebook(dev);
                 } else {
@@ -277,7 +285,7 @@ class Fritzboxdect extends utils.Adapter {
     async checkDevices() {
         this.log.info(`Start device check.`);
         const channels = await this.getChannelsAsync();
-        const channels_array = channels.map((entry) => entry._id);
+        const channels_array = channels.map(entry => entry._id);
         const channels_fritz = [];
         for (const id in this.clients) {
             let device_array = [];
@@ -376,14 +384,14 @@ class Fritzboxdect extends utils.Adapter {
     async dect_fritz(dp, dp_name, devices) {
         await this.createChannels(this.clients[dp], devices, constants, dp_name);
         const channels = await this.getChannelsAsync();
-        const channels_array = channels.map((entry) => entry._id);
+        const channels_array = channels.map(entry => entry._id);
         this.log.debug(`All channels ${JSON.stringify(channels_array)}`);
         this.log.debug(`DP ${dp}`);
         this.clients[dp].updateChannel(channels_array);
     }
 
     /**
-     *
+     * configcheck
      */
     async configcheck() {
         try {
@@ -404,17 +412,16 @@ class Fritzboxdect extends utils.Adapter {
                 await this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
                     native: adapterconfigs ? adapterconfigs.native : [],
                 });
-                //this.updateConfig(adapterconfigs);
                 return true;
             }
             return false;
-        } catch (error) {
+        } catch {
             this.log.warn(`Cannot encrypt all passwords!!!`);
         }
     }
 
     /**
-     *
+     * checkDeviceFolder
      */
     async checkDeviceFolder() {
         try {
@@ -451,6 +458,7 @@ class Fritzboxdect extends utils.Adapter {
 
     /**
      * Is called when adapter shuts down - callback has to be called under any circumstances!
+     *
      * @param {() => void} callback
      */
     onUnload(callback) {
@@ -467,7 +475,7 @@ class Fritzboxdect extends utils.Adapter {
                 }
             }
             callback();
-        } catch (e) {
+        } catch {
             callback();
         }
     }
@@ -491,6 +499,7 @@ class Fritzboxdect extends utils.Adapter {
 
     /**
      * Is called if a subscribed state changes
+     *
      * @param {string} id
      * @param {ioBroker.State | null | undefined} state
      */
@@ -499,7 +508,9 @@ class Fritzboxdect extends utils.Adapter {
             const id_ack = id;
             const lastsplit = id.split(".").pop();
             const fritz = id.split(".")[2];
-            if (!this.clients[fritz]) return;
+            if (!this.clients[fritz]) {
+                return;
+            }
             if (lastsplit === "fritz_monitor_update") {
                 this.clients[fritz].apiFritz.loadMonitor();
                 this.setAckFlag(id_ack, { val: false });
@@ -593,12 +604,17 @@ class Fritzboxdect extends utils.Adapter {
      * @param {string} id
      * @param {ioBroker.State | null | undefined} state
      * @param {string} lastsplit
+     * @param {string} fritz
      */
     async sendcommand(id, state, lastsplit, fritz) {
         try {
             const id_ack = id;
-            if (state == null) return;
-            if (state.val == null) return;
+            if (state == null) {
+                return;
+            }
+            if (state.val == null) {
+                return;
+            }
             const device = id.split(".")[3];
             if (device === "DECT_Control") {
                 if (lastsplit.startsWith("DECT_")) {
@@ -656,10 +672,16 @@ class Fritzboxdect extends utils.Adapter {
                     return;
                 }
                 komfort.val = typeof komfort.val === "string" ? parseFloat(komfort.val) : komfort.val;
-                if (typeof komfort.val != "number" || typeof absenk.val != "number") return;
-                if (nexttemp.val === absenk.val) actemp = komfort.val * 2;
-                else if (nexttemp.val === komfort.val) actemp = absenk.val * 2;
-                else actemp = absenk.val * 2;
+                if (typeof komfort.val != "number" || typeof absenk.val != "number") {
+                    return;
+                }
+                if (nexttemp.val === absenk.val) {
+                    actemp = komfort.val * 2;
+                } else if (nexttemp.val === komfort.val) {
+                    actemp = absenk.val * 2;
+                } else {
+                    actemp = absenk.val * 2;
+                }
             }
             let dummy;
             let button_val;
@@ -726,25 +748,40 @@ class Fritzboxdect extends utils.Adapter {
                     break;
                 case "tsoll":
                     tsoll = parseInt(state.val.toString());
-                    if (tsoll > 7 && tsoll < 32) dummy = tsoll * 2;
-                    else if (state.val === 254 || state.val === 2) dummy = 254;
-                    else if (state.val === 0) dummy = actemp;
-                    else if (state.val === 253 || state.val === 1) dummy = 253;
+                    if (tsoll > 7 && tsoll < 32) {
+                        dummy = tsoll * 2;
+                    } else if (state.val === 254 || state.val === 2) {
+                        dummy = 254;
+                    } else if (state.val === 0) {
+                        dummy = actemp;
+                    } else if (state.val === 253 || state.val === 1) {
+                        dummy = 253;
+                    }
                     if (dummy != null && dummy > 0) {
                         sendstr = `ain=${deviceId}&switchcmd=sethkrtsoll&param=${dummy}&sid=`;
                     }
                     break;
                 case "temperature":
                     state.val = parseInt(state.val.toString());
-                    if (state.val > 6200) dummy = 6500;
-                    else if (state.val > 5600) dummy = 5900;
-                    else if (state.val > 5000) dummy = 5300;
-                    else if (state.val > 4500) dummy = 4700;
-                    else if (state.val > 4000) dummy = 4200;
-                    else if (state.val > 3600) dummy = 3800;
-                    else if (state.val > 3200) dummy = 3400;
-                    else if (state.val > 2850) dummy = 3000;
-                    else dummy = 2700;
+                    if (state.val > 6200) {
+                        dummy = 6500;
+                    } else if (state.val > 5600) {
+                        dummy = 5900;
+                    } else if (state.val > 5000) {
+                        dummy = 5300;
+                    } else if (state.val > 4500) {
+                        dummy = 4700;
+                    } else if (state.val > 4000) {
+                        dummy = 4200;
+                    } else if (state.val > 3600) {
+                        dummy = 3800;
+                    } else if (state.val > 3200) {
+                        dummy = 3400;
+                    } else if (state.val > 2850) {
+                        dummy = 3000;
+                    } else {
+                        dummy = 2700;
+                    }
                     sendstr = `ain=${deviceId}&switchcmd=setcolortemperature&temperature=${dummy}&duration=100&sid=`;
                     break;
                 case "hue":
@@ -775,24 +812,32 @@ class Fritzboxdect extends utils.Adapter {
                     break;
                 case "level":
                     state.val = parseInt(state.val.toString());
-                    if (state.val >= 0 && state.val <= 255)
+                    if (state.val >= 0 && state.val <= 255) {
                         sendstr = `ain=${deviceId}&switchcmd=setlevel&level=${state.val}&sid=`;
+                    }
                     break;
                 case "levelpercentage":
                     state.val = parseInt(state.val.toString());
-                    if (state.val >= 0 && state.val <= 100)
+                    if (state.val >= 0 && state.val <= 100) {
                         sendstr = `ain=${deviceId}&switchcmd=setlevelpercentage&level=${state.val}&sid=`;
+                    }
                     break;
                 case "blindstop":
-                    if (state.val) sendstr = `ain=${deviceId}&switchcmd=setblind&target=stop&sid=`;
+                    if (state.val) {
+                        sendstr = `ain=${deviceId}&switchcmd=setblind&target=stop&sid=`;
+                    }
                     this.setAckFlag(id_ack, { val: false });
                     break;
                 case "blindopen":
-                    if (state.val) sendstr = `ain=${deviceId}&switchcmd=setblind&target=open&sid=`;
+                    if (state.val) {
+                        sendstr = `ain=${deviceId}&switchcmd=setblind&target=open&sid=`;
+                    }
                     this.setAckFlag(id_ack, { val: false });
                     break;
                 case "blindclose":
-                    if (state.val) sendstr = `ain=${deviceId}&switchcmd=setblind&target=close&sid=`;
+                    if (state.val) {
+                        sendstr = `ain=${deviceId}&switchcmd=setblind&target=close&sid=`;
+                    }
                     this.setAckFlag(id_ack, { val: false });
                     break;
                 case "blindlevel":
@@ -832,12 +877,14 @@ class Fritzboxdect extends utils.Adapter {
                         if (state.val === 2) {
                             dummy = "setswitchtoggle";
                         } else {
-                            dummy = "setsimpleonoff&onoff=" + state.val;
+                            dummy = `setsimpleonoff&onoff=${state.val}`;
                         }
                     } else if (folder === "switch") {
                         dummy = state.val ? "setswitchon" : "setswitchoff";
                     }
-                    if (dummy !== null) sendstr = `ain=${deviceId}&switchcmd=${dummy}&sid=`;
+                    if (dummy !== null) {
+                        sendstr = `ain=${deviceId}&switchcmd=${dummy}&sid=`;
+                    }
                     break;
                 case "stateonoff":
                     dummy = state.val ? "setswitchon" : "setswitchoff";
@@ -899,7 +946,7 @@ class Fritzboxdect extends utils.Adapter {
     }
 
     async own_request(id, fritz, url) {
-        url = url + "&sid=";
+        url = `${url}&sid=`;
         const data = await this.clients[fritz].apiFritz.own_request("GET", url, null, true);
         if (data) {
             await this.setState(`${fritz}.DECT_Control.own_request_response`, { val: JSON.stringify(data), ack: true });
@@ -1249,15 +1296,22 @@ class Fritzboxdect extends utils.Adapter {
         let v = max;
         v = Math.floor((max / 255) * 100);
         this.log.debug(v.toString());
-        if (max != 0) s = (delta / max) * 100;
-        else {
+        if (max != 0) {
+            s = (delta / max) * 100;
+        } else {
             return [0, 0, 0];
         }
-        if (r == max) h = (g - b) / delta;
-        else if (g == max) h = 2 + (b - r) / delta;
-        else h = 4 + (r - g) / delta;
+        if (r == max) {
+            h = (g - b) / delta;
+        } else if (g == max) {
+            h = 2 + (b - r) / delta;
+        } else {
+            h = 4 + (r - g) / delta;
+        }
         h = Math.floor(h * 60);
-        if (h < 0) h += 360;
+        if (h < 0) {
+            h += 360;
+        }
         return this.color_500(Math.round((s / 100) * 255), h);
     }
 
@@ -1274,19 +1328,16 @@ class Fritzboxdect extends utils.Adapter {
         const r = [v, q, p, p, t, v][mod];
         const g = [t, v, v, q, p, p][mod];
         const b = [p, p, t, v, v, q][mod];
-        return (
-            "#" +
-            (Math.round(b * 255) | (Math.round(g * 255) << 8) | (Math.round(r * 255) << 16) | (1 << 24))
-                .toString(16)
-                .slice(1)
-        );
+        return `#${(Math.round(b * 255) | (Math.round(g * 255) << 8) | (Math.round(r * 255) << 16) | (1 << 24))
+            .toString(16)
+            .slice(1)}`;
     }
 
     /**
      * @param {number} ms
      */
     sleep(ms) {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             this.sleepTimer = this.setTimeout(() => {
                 resolve(true);
             }, ms);
@@ -1312,6 +1363,7 @@ class Fritzboxdect extends utils.Adapter {
     /**
      * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
      * Using this method requires "common.messagebox" property to be set to true in io-package.json
+     *
      * @param {ioBroker.Message} obj
      */
     onMessage(obj) {
@@ -1319,15 +1371,6 @@ class Fritzboxdect extends utils.Adapter {
             return;
         }
         this.double_call[obj._id] = true;
-        let adapterconfigs = {};
-        try {
-            // @ts-ignore
-            adapterconfigs = this.adapterConfig;
-        } catch (error) {
-            this.sendTo(obj.from, obj.command, [], obj.callback);
-            delete this.double_call[obj._id];
-            return;
-        }
         if (typeof obj === "object" && obj.message) {
             if (obj.command === "getIPList") {
                 try {
@@ -1335,8 +1378,10 @@ class Fritzboxdect extends utils.Adapter {
                     const ips = [];
                     if (obj && obj.message && obj.message.fritzip && obj.message.fritzip.fritzips) {
                         ip_array = obj.message.fritzip.fritzips;
-                    } else if (adapterconfigs && adapterconfigs.native && adapterconfigs.native.macs) {
-                        ip_array = adapterconfigs.native.macs;
+                    } else {
+                        this.sendTo(obj.from, obj.command, [], obj.callback);
+                        delete this.double_call[obj._id];
+                        return;
                     }
                     if (ip_array && Object.keys(ip_array).length > 0) {
                         for (const ip of ip_array) {
@@ -1348,7 +1393,7 @@ class Fritzboxdect extends utils.Adapter {
                     } else {
                         this.sendTo(obj.from, obj.command, [], obj.callback);
                     }
-                } catch (error) {
+                } catch {
                     delete this.double_call[obj._id];
                     this.sendTo(obj.from, obj.command, [], obj.callback);
                 }
@@ -1360,8 +1405,10 @@ class Fritzboxdect extends utils.Adapter {
                     const icons = [];
                     if (obj && obj.message && obj.message.icon && obj.message.icon.icons) {
                         icon_array = obj.message.icon.icons;
-                    } else if (adapterconfigs && adapterconfigs.native && adapterconfigs.native.icons) {
-                        icon_array = adapterconfigs.native.icons;
+                    } else {
+                        this.sendTo(obj.from, obj.command, [], obj.callback);
+                        delete this.double_call[obj._id];
+                        return;
                     }
                     if (icon_array && Object.keys(icon_array).length > 0) {
                         for (const icon of icon_array) {
@@ -1373,14 +1420,14 @@ class Fritzboxdect extends utils.Adapter {
                     } else {
                         this.sendTo(obj.from, obj.command, [], obj.callback);
                     }
-                } catch (error) {
+                } catch {
                     delete this.double_call[obj._id];
                     this.sendTo(obj.from, obj.command, [], obj.callback);
                 }
                 delete this.double_call[obj._id];
                 return;
             } else if (obj.command === "getTRRequest") {
-                this.log.debug("onMessage: " + JSON.stringify(obj));
+                this.log.debug(`onMessage: ${JSON.stringify(obj)}`);
                 if (obj.message) {
                     const message = obj.message;
                     if (message.ip && message.ip != "") {
@@ -1451,7 +1498,7 @@ class Fritzboxdect extends utils.Adapter {
                 delete this.double_call[obj._id];
                 return;
             } else if (obj.command === "getHTTPRequest") {
-                this.log.debug("onMessage: " + JSON.stringify(obj));
+                this.log.debug(`onMessage: ${JSON.stringify(obj)}`);
                 if (obj.message) {
                     const message = obj.message;
                     if (message.ip && message.ip != "") {
@@ -1479,7 +1526,9 @@ class Fritzboxdect extends utils.Adapter {
     }
 
     getmask(mask) {
-        if (mask == 0 || mask == "0") return constants.bitmasks[0];
+        if (mask == 0 || mask == "0") {
+            return constants.bitmasks[0];
+        }
         const masks = (mask >>> 0).toString(2).split("").reverse().join("");
         let bitstring = null;
         for (let i = 0; i < masks.toString().length; i++) {
@@ -1487,7 +1536,7 @@ class Fritzboxdect extends utils.Adapter {
                 if (bitstring === null) {
                     bitstring = constants.bitmasks[i];
                 } else {
-                    bitstring += " - " + constants.bitmasks[i];
+                    bitstring += ` - ${constants.bitmasks[i]}`;
                 }
             }
         }
@@ -1504,25 +1553,39 @@ class Fritzboxdect extends utils.Adapter {
         let valtfnew = null;
         const valtfarr = valtf.split(",");
         for (let i = 0; i < valtfarr.length; i++) {
-            if (valtfnew === null) valtfnew = constants.interfaces[valtfarr[i]];
-            else valtfnew += " - " + constants.interfaces[valtfarr[i]];
+            if (valtfnew === null) {
+                valtfnew = constants.interfaces[valtfarr[i]];
+            } else {
+                valtfnew += ` - ${constants.interfaces[valtfarr[i]]}`;
+            }
         }
         return valtfnew;
     }
 
     getIcon(mask, name, dp_name) {
-        if (constants.pics[name] != null) return constants.pics[name];
+        if (constants.pics[name] != null) {
+            return constants.pics[name];
+        }
         const masks = (mask >>> 0).toString(2).split("").reverse().join("");
         const pic = typeof name != "undefined" ? name.split(" ").pop() : "NOK";
-        if (masks.toString()[12] === "1") return constants.pics["Group"];
-        else if (constants.pics[pic]) return constants.pics[pic];
-        else if (masks.toString()[18] === "1") return constants.pics["Blind"];
-        else if (masks.toString()[17] === "1") return constants.pics[500];
-        else if (masks.toString()[4] === "1") return constants.pics["FUN"];
-        else if (masks.toString()[6] === "1") return constants.pics[302];
-        else if (dp_name === "TRIGGER") return constants.pics["trigger"];
-        else if (dp_name === "TEMPLATE") return constants.pics["templates"];
-        else return constants.pics["Unbekannt"];
+        if (masks.toString()[12] === "1") {
+            return constants.pics["Group"];
+        } else if (constants.pics[pic]) {
+            return constants.pics[pic];
+        } else if (masks.toString()[18] === "1") {
+            return constants.pics["Blind"];
+        } else if (masks.toString()[17] === "1") {
+            return constants.pics[500];
+        } else if (masks.toString()[4] === "1") {
+            return constants.pics["FUN"];
+        } else if (masks.toString()[6] === "1") {
+            return constants.pics[302];
+        } else if (dp_name === "TRIGGER") {
+            return constants.pics["trigger"];
+        } else if (dp_name === "TEMPLATE") {
+            return constants.pics["templates"];
+        }
+        return constants.pics["Unbekannt"];
     }
 
     /**
@@ -1548,7 +1611,7 @@ if (require.main !== module) {
     /**
      * @param {Partial<utils.AdapterOptions>} [options={}]
      */
-    module.exports = (options) => new Fritzboxdect(options);
+    module.exports = options => new Fritzboxdect(options);
 } else {
     // otherwise start the instance directly
     new Fritzboxdect();
