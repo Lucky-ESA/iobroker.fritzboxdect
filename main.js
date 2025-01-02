@@ -51,6 +51,7 @@ class Fritzboxdect extends utils.Adapter {
 
     /**
      * Is called when databases are connected and adapter received configuration.
+     *
      */
     async onReady() {
         await this.setState("info.connection", { val: false, ack: true });
@@ -508,6 +509,7 @@ class Fritzboxdect extends utils.Adapter {
             const id_ack = id;
             const lastsplit = id.split(".").pop();
             const fritz = id.split(".")[2];
+            const device = id.split(".")[3];
             if (!this.clients[fritz]) {
                 return;
             }
@@ -527,7 +529,7 @@ class Fritzboxdect extends utils.Adapter {
                 return;
             }
             if (lastsplit === "sendCommand") {
-                this.clients[fritz].tr064.sendCommand(fritz, state.val, null);
+                this.clients[fritz].tr064.sendCommand(fritz, state.val, null, null);
                 this.setAckFlag(id_ack);
                 return;
             }
@@ -536,67 +538,75 @@ class Fritzboxdect extends utils.Adapter {
                 this.setAckFlag(id_ack);
                 return;
             }
-            if (lastsplit === "wlan24") {
-                const wlan24 = {
-                    service: "urn:dslforum-org:service:WLANConfiguration:1",
-                    action: "SetEnable",
-                    params: {
-                        NewEnable: state.val ? "1" : "0",
-                    },
-                    html: true,
-                    tag: "",
-                    link: "",
-                };
-                this.clients[fritz].tr064.sendCommand(fritz, JSON.stringify(wlan24), null);
-                this.setAckFlag(id_ack);
+            if (device === "TR_064") {
+                switch (lastsplit) {
+                    case "wlan24":
+                        this.clients[fritz].tr064.setWlan(1, state.val);
+                        this.setAckFlag(id_ack, { val: "" });
+                        break;
+                    case "wlan50":
+                        this.clients[fritz].tr064.setWlan(2, state.val);
+                        this.setAckFlag(id_ack, { val: "" });
+                        break;
+                    case "wlan60":
+                        this.clients[fritz].tr064.setWlan(3, state.val);
+                        this.setAckFlag(id_ack, { val: "" });
+                        break;
+                    case "wlan70":
+                        this.clients[fritz].tr064.setWlan(4, state.val);
+                        this.setAckFlag(id_ack, { val: "" });
+                        break;
+                    case "wlanguest":
+                        this.clients[fritz].tr064.setWlan(5, state.val);
+                        this.setAckFlag(id_ack, { val: "" });
+                        break;
+                    case "wlan24name":
+                        this.clients[fritz].tr064.setWlanName(1, state.val);
+                        this.setAckFlag(id_ack, { val: "" });
+                        break;
+                    case "wlan50name":
+                        this.clients[fritz].tr064.setWlanName(2, state.val);
+                        this.setAckFlag(id_ack, { val: "" });
+                        break;
+                    case "wlan60name":
+                        this.clients[fritz].tr064.setWlanName(3, state.val);
+                        this.setAckFlag(id_ack, { val: "" });
+                        break;
+                    case "wlan70name":
+                        this.clients[fritz].tr064.setWlanName(4, state.val);
+                        this.setAckFlag(id_ack, { val: "" });
+                        break;
+                    case "wlanguestname":
+                        this.clients[fritz].tr064.setWlanName(5, state.val);
+                        this.setAckFlag(id_ack, { val: "" });
+                        break;
+                    case "wlan24PW":
+                        this.clients[fritz].tr064.setWlanPW(1, state.val);
+                        this.setAckFlag(id_ack, { val: "" });
+                        break;
+                    case "wlan50PW":
+                        this.clients[fritz].tr064.setWlanPW(2, state.val);
+                        this.setAckFlag(id_ack, { val: "" });
+                        break;
+                    case "wlan60PW":
+                        this.clients[fritz].tr064.setWlanPW(3, state.val);
+                        this.setAckFlag(id_ack, { val: "" });
+                        break;
+                    case "wlan70PW":
+                        this.clients[fritz].tr064.setWlanPW(4, state.val);
+                        this.setAckFlag(id_ack, { val: "" });
+                        break;
+                    case "wlanGuestPW":
+                        this.clients[fritz].tr064.setWlanPW(5, state.val);
+                        this.setAckFlag(id_ack, { val: "" });
+                        break;
+                    default:
+                        // nothing
+                        break;
+                }
                 return;
             }
-            if (lastsplit === "wlan50") {
-                const wlan50 = {
-                    service: "urn:dslforum-org:service:WLANConfiguration:2",
-                    action: "SetEnable",
-                    params: {
-                        NewEnable: state.val ? "1" : "0",
-                    },
-                    html: true,
-                    tag: "",
-                    link: "",
-                };
-                this.clients[fritz].tr064.sendCommand(fritz, JSON.stringify(wlan50), null);
-                this.setAckFlag(id_ack);
-                return;
-            }
-            if (lastsplit === "wlanguest") {
-                const wlanguest = {
-                    service: "urn:dslforum-org:service:WLANConfiguration:3",
-                    action: "SetEnable",
-                    params: {
-                        NewEnable: state.val ? "1" : "0",
-                    },
-                    html: true,
-                    tag: "",
-                    link: "",
-                };
-                this.clients[fritz].tr064.sendCommand(fritz, JSON.stringify(wlanguest), null);
-                this.setAckFlag(id_ack);
-                return;
-            }
-            if (lastsplit === "wlanguestname") {
-                const wlanguest = {
-                    service: "urn:dslforum-org:service:WLANConfiguration:3",
-                    action: "SetSSID",
-                    params: {
-                        NewSSID: state.val,
-                    },
-                    html: true,
-                    tag: "",
-                    link: "",
-                };
-                this.clients[fritz].tr064.sendCommand(fritz, JSON.stringify(wlanguest), null);
-                this.setAckFlag(id_ack);
-                return;
-            }
-            this.sendcommand(id, state, String(lastsplit), fritz);
+            this.sendcommand(id, state, String(lastsplit), fritz, device);
         }
     }
 
@@ -605,8 +615,9 @@ class Fritzboxdect extends utils.Adapter {
      * @param {ioBroker.State | null | undefined} state
      * @param {string} lastsplit
      * @param {string} fritz
+     * @param {string} device
      */
-    async sendcommand(id, state, lastsplit, fritz) {
+    async sendcommand(id, state, lastsplit, fritz, device) {
         try {
             const id_ack = id;
             if (state == null) {
@@ -615,7 +626,6 @@ class Fritzboxdect extends utils.Adapter {
             if (state.val == null) {
                 return;
             }
-            const device = id.split(".")[3];
             if (device === "DECT_Control") {
                 if (lastsplit.startsWith("DECT_")) {
                     this.setAckFlag(id_ack);
@@ -1478,7 +1488,7 @@ class Fritzboxdect extends utils.Adapter {
                                             obj.callback,
                                         );
                                     } else {
-                                        this.clients[ip].tr064.sendCommand(ip, send, obj);
+                                        this.clients[ip].tr064.sendCommand(ip, send, obj, null);
                                     }
                                 } else {
                                     this.sendTo(obj.from, obj.command, [{ error: "Missing action" }], obj.callback);
