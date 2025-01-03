@@ -19,28 +19,28 @@ Also supports TR-064 protocol with call monitoring, recent calls and phonebook.
 
 ## Required
 
--   Node 18 or 20
--   JS-Controller >= 5.0.19
--   Admin >= 6.13.16
--   Fritz OS >= 7.0
+- Node 18 or 20
+- JS-Controller >= 5.0.19
+- Admin >= 6.13.16
+- Fritz OS >= 7.0
 
 ## Known devices
 
--   FRITZ!DECT Repeater 100
--   FRITZ!DECT Repeater 100 with temperature
--   FRITZ!DECT 200
--   FRITZ!DECT 210
--   FRITZ!DECT 300
--   FRITZ!DECT 301
--   FRITZ!DECT 302
--   FRITZ!DECT 350
--   Fritz Comet
--   FRITZ!DECT 440
--   FRITZ!DECT 500
--   FRITZ!Powerline 546E
--   Rollotron 1213
--   HAN-FUN Door/Window contact
--   Possible ZigBee 3.0
+- FRITZ!DECT Repeater 100
+- FRITZ!DECT Repeater 100 with temperature
+- FRITZ!DECT 200
+- FRITZ!DECT 210
+- FRITZ!DECT 300
+- FRITZ!DECT 301
+- FRITZ!DECT 302
+- FRITZ!DECT 350
+- Fritz Comet
+- FRITZ!DECT 440
+- FRITZ!DECT 500
+- FRITZ!Powerline 546E
+- Rollotron 1213
+- HAN-FUN Door/Window contact
+- Possible ZigBee 3.0
 
 ## Description
 
@@ -56,13 +56,13 @@ Also supports TR-064 protocol with call monitoring, recent calls and phonebook.
 
 ### 0.0.1
 
--   (Lucky-ESA) initial release
+- (Lucky-ESA) initial release
 
 ## License
 
 MIT License
 
-Copyright (c) 2023-2024 Lucky-ESA <github@luckyskills.de>
+Copyright (c) 2023-2025 Lucky-ESA <github@luckyskills.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
